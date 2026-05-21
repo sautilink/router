@@ -1,12 +1,25 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Router Setup Gateway — SautiLink</title>
-  <meta name="description" content="Quickly access your router admin page with SautiLink Router Gateway. Search router IPs, open setup pages, and manage your network easily." />
-  <meta name="theme-color" content="#070b18" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
-  <meta property="og:description" content="Access your router admin page instantly with SautiLink Router Gateway." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Router Setup Gateway — SautiLink</title>
+
+  <meta name="description" content="Quick access to router admin pages with SautiLink Router Gateway. Open router IPs and manage your network easily." />
+  <meta name="theme-color" content="#070b18" />
+
+  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
+  <meta property="og:description" content="Access router admin pages instantly with SautiLink Router Gateway." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA MANIFEST (external for production) -->  <link rel="manifest" href="/manifest.json">  <style>
+  <meta property="og:url" content="https://router.sautilink.com" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+
+  <style>
     :root{
       --bg:#070b18;
       --card:#0f172a;
@@ -37,13 +50,17 @@
     body{
       background:var(--bg);
       color:var(--text);
-      transition:.25s ease;
       min-height:100vh;
       display:flex;
       flex-direction:column;
+      transition:.25s ease;
     }
 
-    .container{max-width:1200px;margin:auto;padding:24px;}
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:24px;
+    }
 
     header{
       display:flex;
@@ -52,34 +69,54 @@
       margin-bottom:40px;
     }
 
-    .logo{font-size:1.6rem;font-weight:800;}
-    .logo span{color:var(--primary);}
+    .logo{
+      font-size:1.6rem;
+      font-weight:800;
+    }
 
-    .theme-btn,.install-btn{
+    .logo span{
+      color:var(--primary);
+    }
+
+    .btn-small{
       padding:10px 14px;
       border-radius:12px;
       border:1px solid var(--border);
       background:var(--card);
       color:var(--text);
       cursor:pointer;
-      margin-left:8px;
     }
 
-    .hero{text-align:center;margin-bottom:30px;}
-    .hero h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-2px;}
-    .hero p{color:var(--muted);max-width:720px;margin:12px auto;}
+    .hero{
+      text-align:center;
+      margin-bottom:25px;
+    }
 
-    .notice{
-      display:inline-block;
-      padding:12px 16px;
-      border-radius:12px;
-      background:var(--card);
-      border:1px solid var(--border);
+    .hero h1{
+      font-size:clamp(2.2rem,6vw,4rem);
+      letter-spacing:-2px;
+    }
+
+    .hero p{
       color:var(--muted);
       margin-top:10px;
     }
 
-    .search{margin:25px auto;max-width:500px;display:flex;}
+    .notice{
+      margin-top:12px;
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--muted);
+    }
+
+    .search{
+      max-width:500px;
+      margin:25px auto;
+    }
+
     .search input{
       width:100%;
       padding:14px;
@@ -106,7 +143,9 @@
       transition:.2s;
     }
 
-    .card:hover{transform:translateY(-3px);}
+    .card:hover{
+      transform:translateY(-3px);
+    }
 
     .btn{
       display:block;
@@ -115,30 +154,9 @@
       border-radius:12px;
       background:var(--primary);
       color:#fff;
-      text-decoration:none;
       font-weight:700;
-    }
-
-    .brands{margin-top:60px;}
-    .brands h2{color:var(--primary);}
-
-    .brand-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:12px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--card);
       text-decoration:none;
-      color:var(--text);
-      font-weight:600;
+      margin-top:10px;
     }
 
     footer{
@@ -155,9 +173,15 @@
       margin-bottom:10px;
     }
 
-    .footer-links a{color:var(--muted);text-decoration:none;}
+    .footer-links a{
+      color:var(--muted);
+      text-decoration:none;
+    }
 
-    .copyright{color:var(--muted);font-size:.9rem;}
+    .copyright{
+      color:var(--muted);
+      font-size:.9rem;
+    }
 
     .install-banner{
       position:fixed;
@@ -172,32 +196,57 @@
       gap:10px;
       align-items:center;
     }
-  </style></head><body class="dark"><div class="container"><header>
-  <div class="logo">Sauti<span>Link</span> Router</div>
-  <div>
-    <button class="theme-btn" onclick="toggleTheme()">Theme</button>
-    <button class="install-btn" id="installBtn">Install</button>
+
+  </style>
+</head>
+
+<body class="dark">
+
+<div class="container">
+
+  <header>
+    <div class="logo">Sauti<span>Link</span> Router</div>
+    <button class="btn-small" onclick="toggleTheme()">Theme</button>
+  </header>
+
+  <section class="hero">
+    <h1>Router Setup Gateway</h1>
+    <p>Open router admin pages instantly and manage your network easily.</p>
+    <div class="notice">Make sure you are connected to your WiFi router.</div>
+  </section>
+
+  <div class="search">
+    <input type="text" placeholder="Search router IP..." onkeyup="filterCards(this.value)">
   </div>
-</header><section class="hero">
-  <h1>Router Setup Gateway</h1>
-  <p>Search and open your router admin page instantly.</p>
-  <div class="notice">Ensure you are connected to WiFi before proceeding.</div>
-</section><section class="search">
-  <input type="text" placeholder="Search router IP or brand..." onkeyup="filterCards(this.value)">
-</section><section class="grid" id="cards">
-  <div class="card" data-name="192.168.1.1"><h3>192.168.1.1</h3><a class="btn" href="http://192.168.1.1">OPEN</a></div>
-  <div class="card" data-name="192.168.0.1"><h3>192.168.0.1</h3><a class="btn" href="http://192.168.0.1">OPEN</a></div>
-  <div class="card" data-name="10.0.0.1"><h3>10.0.0.1</h3><a class="btn" href="http://10.0.0.1">OPEN</a></div>
-  <div class="card" data-name="192.168.100.1"><h3>192.168.100.1</h3><a class="btn" href="http://192.168.100.1">OPEN</a></div>
-</section><section class="brands">
-  <h2>BRANDS</h2>
-  <div class="brand-grid">
-    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
-    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
-    <a class="brand" href="http://192.168.88.1"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
-    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
-  </div>
-</section></div><footer>
+
+  <section class="grid">
+
+    <div class="card" data-name="192.168.1.1">
+      <h3>192.168.1.1</h3>
+      <a class="btn" href="http://192.168.1.1">OPEN</a>
+    </div>
+
+    <div class="card" data-name="192.168.0.1">
+      <h3>192.168.0.1</h3>
+      <a class="btn" href="http://192.168.0.1">OPEN</a>
+    </div>
+
+    <div class="card" data-name="10.0.0.1">
+      <h3>10.0.0.1</h3>
+      <a class="btn" href="http://10.0.0.1">OPEN</a>
+    </div>
+
+    <div class="card" data-name="192.168.100.1">
+      <h3>192.168.100.1</h3>
+      <a class="btn" href="http://192.168.100.1">OPEN</a>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+
   <div class="footer-links">
     <a href="https://www.sautilink.com">Home</a>
     <a href="https://sautilink.com/privacy">Privacy</a>
@@ -206,71 +255,49 @@
     <a href="https://sautilink.com/contact">Contact</a>
     <a href="https://sautilink.com/help">Help</a>
   </div>
-  <div class="copyright">© 2026 - SautiLink Corporation. All rights reserved.</div>
-</footer><div class="install-banner" id="installBanner">
+
+  <div class="copyright">
+    © 2026 - SautiLink Corporation. All rights reserved.
+  </div>
+
+</footer>
+
+<div class="install-banner" id="installBanner">
   Install SautiLink Router App
   <button onclick="installApp()">Install</button>
-</div><script>
+</div>
+
+<script>
 let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
+window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('installBanner').style.display = 'flex';
+  document.getElementById("installBanner").style.display = "flex";
 });
 
 function installApp(){
   if(!deferredPrompt) return;
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(()=>deferredPrompt=null);
+  deferredPrompt.userChoice.then(()=> deferredPrompt = null);
 }
 
 function toggleTheme(){
-  document.body.classList.toggle('light');
+  document.body.classList.toggle("light");
 }
 
-function filterCards(v){
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display = c.dataset.name.includes(v.toLowerCase()) ? 'block':'none';
+function filterCards(value){
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display = c.dataset.name.includes(value.toLowerCase())
+      ? "block"
+      : "none";
   });
 }
 
-// Register real service worker
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js');
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("/sw.js");
 }
-</script></body>
-</html><!-- ===================== PWA FILES ===================== --><!-- manifest.json --><!--
-{
-  "name": "SautiLink Router",
-  "short_name": "Router",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#070b18",
-  "theme_color": "#070b18",
-  "icons": [
-    {
-      "src": "https://logo.clearbit.com/sautilink.com",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://logo.clearbit.com/sautilink.com",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
---><!-- sw.js --><!--
-self.addEventListener('install', event => {
-  self.skipWaiting();
-});
+</script>
 
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
-});
--->
+</body>
+</html>
