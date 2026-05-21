@@ -13,14 +13,21 @@
 
   <link rel="icon" href="https://www.sautilink.com/favicon.ico" type="image/x-icon">
   
+  <!-- Bricolage Grotesque Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Inter', system-ui, sans-serif; }
+    body { 
+      font-family: 'Bricolage Grotesque', system-ui, sans-serif; 
+    }
+    .heading-font {
+      font-family: 'Bricolage Grotesque', sans-serif;
+    }
     .brand-card {
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
     .brand-card:hover {
       transform: translateY(-12px);
@@ -37,7 +44,7 @@
         <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center">
           <i class="fa-solid fa-wifi text-white text-2xl"></i>
         </div>
-        <div>
+        <div class="heading-font">
           <span class="text-2xl font-semibold tracking-tight">SautiLink</span>
           <span class="text-blue-600 font-semibold">Router</span>
         </div>
@@ -52,7 +59,7 @@
   <div class="max-w-7xl mx-auto px-8 py-16">
 
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <h1 class="text-5xl md:text-6xl font-semibold tracking-tight mb-4">Router Setup Hub</h1>
+      <h1 class="heading-font text-5xl md:text-6xl font-semibold tracking-tighter mb-4">Router Setup Hub</h1>
       <p class="text-xl text-zinc-600 dark:text-zinc-400">
         Quick access to your router’s admin panel
       </p>
@@ -68,7 +75,7 @@
 
     <!-- Common IPs -->
     <div class="mb-20">
-      <h2 class="text-2xl font-semibold mb-8 text-center">Common Router IPs</h2>
+      <h2 class="heading-font text-2xl font-semibold mb-8 text-center">Common Router IPs</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <p class="font-mono text-3xl font-bold text-blue-600">192.168.1.1</p>
@@ -88,59 +95,67 @@
 
     <!-- Brands -->
     <div>
-      <h2 class="text-2xl font-semibold mb-10 text-center">Supported Router Brands</h2>
+      <h2 class="heading-font text-2xl font-semibold mb-10 text-center">Supported Router Brands</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-
+        <!-- TP-Link -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/TPLINK_Logo_2.svg/512px-TPLINK_Logo_2.svg.png" alt="TP-Link" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">TP-Link</h3>
         </a>
 
+        <!-- Huawei -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Huawei_Logo.svg/512px-Huawei_Logo.svg.png" alt="Huawei" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">Huawei</h3>
         </a>
 
+        <!-- Netgear -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Netgear_logo.svg/512px-Netgear_logo.svg.png" alt="Netgear" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">Netgear</h3>
         </a>
 
+        <!-- ASUS -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Asus_Logo.svg/512px-Asus_Logo.svg.png" alt="ASUS" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">ASUS</h3>
         </a>
 
+        <!-- MikroTik -->
         <a href="http://192.168.88.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://mikrotik.com/images/logo.svg" alt="MikroTik" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">MikroTik</h3>
         </a>
 
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
+        <!-- D-Link -->
+        <a href="http://192.168.0.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/D-Link_wordmark.svg/512px-D-Link_wordmark.svg.png" alt="D-Link" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">D-Link</h3>
         </a>
 
+        <!-- ZTE -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ZTE_Logo.svg/512px-ZTE_Logo.svg.png" alt="ZTE" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">ZTE</h3>
         </a>
 
+        <!-- Linksys -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Linksys_logo.svg/512px-Linksys_logo.svg.png" alt="Linksys" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">Linksys</h3>
         </a>
 
+        <!-- Xiaomi -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Xiaomi_logo.svg/512px-Xiaomi_logo.svg.png" alt="Xiaomi" class="h-11 mx-auto mb-5">
           <h3 class="font-semibold">Xiaomi</h3>
         </a>
 
+        <!-- Tenda -->
         <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <div class="h-11 flex items-center justify-center text-2xl font-bold text-rose-600 mb-5">Tenda</div>
+          <div class="h-11 flex items-center justify-center text-3xl font-bold text-rose-600 mb-5">Tenda</div>
           <h3 class="font-semibold">Tenda</h3>
         </a>
-
       </div>
     </div>
   </div>
@@ -163,7 +178,7 @@
   </footer>
 
   <script>
-    // Dark Mode
+    // Dark Mode Toggle
     const toggle = document.getElementById('theme-toggle');
     const icon = document.getElementById('theme-icon');
 
