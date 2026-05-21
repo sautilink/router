@@ -3,11 +3,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Router Setup Gateway — SautiLink</title>
   <meta name="description" content="Quickly access your router admin page with SautiLink Router Gateway. Search router IPs, open setup pages, and manage your network easily." />
-  <meta name="keywords" content="Router Login, Router Setup, WiFi Admin, TP-Link Login, Huawei Router, Mikrotik Login, 192.168.1.1, SautiLink" />
-  <meta name="author" content="SautiLink Corporation" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
+  <meta name="theme-color" content="#070b18" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
   <meta property="og:description" content="Access your router admin page instantly with SautiLink Router Gateway." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <style>
+  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA Manifest (inline via data URL) -->  <link rel="manifest" href="data:application/manifest+json,{\"name\":\"SautiLink Router\",\"short_name\":\"Router\",\"start_url\":\"/\",\"display\":\"standalone\",\"background_color\":\"#070b18\",\"theme_color\":\"#070b18\",\"icons\":[{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"192x192\",\"type\":\"image/png\"},{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}" />  <style>
     :root {
       --bg: #070b18;
       --card: #0f172a;
@@ -62,13 +61,14 @@
       font-weight: 800;
     }
 
-    .theme-btn {
+    .theme-btn, .install-btn {
       padding: 10px 14px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
       cursor: pointer;
+      margin-left: 8px;
     }
 
     .hero {
@@ -129,9 +129,7 @@
       transition: 0.2s;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-    }
+    .card:hover { transform: translateY(-3px); }
 
     .btn {
       display: block;
@@ -144,9 +142,7 @@
       font-weight: 600;
     }
 
-    .brands {
-      margin-top: 60px;
-    }
+    .brands { margin-top: 60px; }
 
     .brand-grid {
       display: grid;
@@ -165,11 +161,6 @@
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
-    }
-
-    .brand img {
-      width: 20px;
-      height: 20px;
     }
 
     footer {
@@ -195,48 +186,45 @@
       color: var(--muted);
       font-size: 0.9rem;
     }
-  </style></head>
-<body class="dark"><div class="container">  <header>
+
+    .install-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 14px;
+      display: none;
+      gap: 10px;
+      align-items: center;
+    }
+  </style></head><body class="dark"><div class="container">  <header>
     <div class="logo">SautiLink Router</div>
-    <button class="theme-btn" onclick="toggleTheme()">Toggle</button>
+    <div>
+      <button class="theme-btn" onclick="toggleTheme()">Theme</button>
+      <button class="install-btn" id="installBtn">Install App</button>
+    </div>
   </header>  <section class="hero">
     <h1>Router Setup Gateway</h1>
     <p>Search and open your router admin page instantly.</p>
     <div class="notice">Ensure you are connected to WiFi before proceeding.</div><div class="search">
-  <input type="text" id="search" placeholder="Search router IP or brand..." onkeyup="filterCards()" />
+  <input type="text" placeholder="Search router IP or brand..." onkeyup="filterCards(this.value)" />
 </div>
 
-  </section>  <section class="grid" id="cards"><div class="card" data-name="192.168.1.1">
-  <h3>192.168.1.1</h3>
-  <p>Main router gateway</p>
-  <a class="btn" href="http://192.168.1.1">Open</a>
-</div>
-
-<div class="card" data-name="192.168.0.1">
-  <h3>192.168.0.1</h3>
-  <p>Default router login</p>
-  <a class="btn" href="http://192.168.0.1">Open</a>
-</div>
-
-<div class="card" data-name="10.0.0.1">
-  <h3>10.0.0.1</h3>
-  <p>ISP routers</p>
-  <a class="btn" href="http://10.0.0.1">Open</a>
-</div>
-
-<div class="card" data-name="192.168.100.1">
-  <h3>192.168.100.1</h3>
-  <p>Modem access</p>
-  <a class="btn" href="http://192.168.100.1">Open</a>
-</div>
+  </section>  <section class="grid" id="cards"><div class="card" data-name="192.168.1.1"><h3>192.168.1.1</h3><a class="btn" href="http://192.168.1.1">Open</a></div>
+<div class="card" data-name="192.168.0.1"><h3>192.168.0.1</h3><a class="btn" href="http://192.168.0.1">Open</a></div>
+<div class="card" data-name="10.0.0.1"><h3>10.0.0.1</h3><a class="btn" href="http://10.0.0.1">Open</a></div>
+<div class="card" data-name="192.168.100.1"><h3>192.168.100.1</h3><a class="btn" href="http://192.168.100.1">Open</a></div>
 
   </section>  <section class="brands">
     <h2>Brands</h2>
     <div class="brand-grid">
-      <a class="brand" data-name="tplink" href="http://192.168.1.1"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
-      <a class="brand" data-name="huawei" href="http://192.168.1.1"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
-      <a class="brand" data-name="mikrotik" href="http://192.168.88.1"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
-      <a class="brand" data-name="zte" href="http://192.168.1.1"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
+      <a class="brand" href="http://192.168.1.1">TP-Link</a>
+      <a class="brand" href="http://192.168.1.1">Huawei</a>
+      <a class="brand" href="http://192.168.88.1">MikroTik</a>
+      <a class="brand" href="http://192.168.1.1">ZTE</a>
     </div>
   </section></div><footer>
   <div class="footer-links">
@@ -248,19 +236,45 @@
     <a href="https://sautilink.com/help">Help</a>
   </div>
   <div class="copyright">© 2026 - SautiLink Corporation. All rights reserved.</div>
-</footer><script>
-function toggleTheme(){
+</footer><div class="install-banner" id="installBanner">
+  Install SautiLink Router App
+  <button onclick="installApp()">Install</button>
+</div><script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').style.display = 'flex';
+});
+
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+  });
+}
+
+function toggleTheme() {
   document.body.classList.toggle('light');
 }
 
-function filterCards(){
-  let input = document.getElementById('search').value.toLowerCase();
-  let cards = document.querySelectorAll('[data-name]');
-
-  cards.forEach(card => {
-    let name = card.getAttribute('data-name').toLowerCase();
-    card.style.display = name.includes(input) ? 'block' : 'none';
+function filterCards(value) {
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = c.dataset.name.includes(value.toLowerCase()) ? 'block' : 'none';
   });
+}
+
+if ('serviceWorker' in navigator) {
+  const sw = `
+  self.addEventListener('install', e => self.skipWaiting());
+  self.addEventListener('fetch', e => {});
+  `;
+
+  const blob = new Blob([sw], {type: 'application/javascript'});
+  const swURL = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swURL);
 }
 </script></body>
 </html>
