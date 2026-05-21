@@ -1,202 +1,265 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Router Setup Hub - SautiLink</title>
-  <meta name="description" content="Quick and easy access to your router admin panel. Support for TP-Link, Huawei, Netgear, ASUS, MikroTik and many more.">
-  
-  <meta property="og:title" content="Router Setup Hub - SautiLink">
-  <meta property="og:description" content="Fast router login for all major brands">
-  <meta property="og:url" content="https://router.sautilink.com">
-
-  <link rel="icon" href="https://www.sautilink.com/favicon.ico" type="image/x-icon">
-  
-  <!-- Bricolage Grotesque Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  
-  <style>
-    body { 
-      font-family: 'Bricolage Grotesque', system-ui, sans-serif; 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Router Setup Gateway — SautiLink</title>
+  <meta name="description" content="Quickly access your router admin page with SautiLink Router Gateway. Open common router login addresses, setup WiFi routers, and manage your network easily." />
+  <meta name="keywords" content="Router Login, Router Setup, WiFi Admin, TP-Link Login, Huawei Router, Mikrotik Login, 192.168.1.1, SautiLink" />
+  <meta name="author" content="SautiLink Corporation" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
+  <meta property="og:description" content="Access your router admin page instantly with SautiLink Router Gateway." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://router.sautilink.com" />  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: rgba(15, 23, 42, 0.08);
+      --primary: #0f172a;
+      --shadow: 0 12px 30px rgba(0,0,0,0.08);
     }
-    .heading-font {
+
+    body.dark {
+      --bg: #070b18;
+      --card: #0f172a;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+      --primary: #f8fafc;
+      --shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Bricolage Grotesque', sans-serif;
     }
-    .brand-card {
-      transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.25s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .brand-card:hover {
-      transform: translateY(-12px);
-      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 24px;
     }
-  </style>
-</head>
-<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen transition-colors">
 
-  <!-- Navbar -->
-  <nav class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center">
-          <i class="fa-solid fa-wifi text-white text-2xl"></i>
-        </div>
-        <div class="heading-font">
-          <span class="text-2xl font-semibold tracking-tight">SautiLink</span>
-          <span class="text-blue-600 font-semibold">Router</span>
-        </div>
-      </div>
-      
-      <button id="theme-toggle" class="w-11 h-11 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
-        <i id="theme-icon" class="fa-solid fa-moon text-xl"></i>
-      </button>
-    </div>
-  </nav>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 60px;
+    }
 
-  <div class="max-w-7xl mx-auto px-8 py-16">
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
 
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <h1 class="heading-font text-5xl md:text-6xl font-semibold tracking-tighter mb-4">Router Setup Hub</h1>
-      <p class="text-xl text-zinc-600 dark:text-zinc-400">
-        Quick access to your router’s admin panel
-      </p>
-    </div>
+    .theme-btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-    <!-- Warning -->
-    <div class="max-w-2xl mx-auto bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-900 rounded-3xl p-8 mb-16 text-center">
-      <i class="fa-solid fa-shield-halved text-3xl text-amber-600 mb-4"></i>
-      <p class="font-medium text-amber-800 dark:text-amber-300">
-        Make sure you are connected to your WiFi router before accessing the setup page.
-      </p>
-    </div>
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
 
-    <!-- Common IPs -->
-    <div class="mb-20">
-      <h2 class="heading-font text-2xl font-semibold mb-8 text-center">Common Router IPs</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <p class="font-mono text-3xl font-bold text-blue-600">192.168.1.1</p>
-          <p class="text-sm text-zinc-500 mt-2">Most Common</p>
-        </a>
-        <a href="http://192.168.0.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <p class="font-mono text-3xl font-bold text-blue-600">192.168.0.1</p>
-        </a>
-        <a href="http://10.0.0.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <p class="font-mono text-3xl font-bold text-blue-600">10.0.0.1</p>
-        </a>
-        <a href="http://192.168.100.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <p class="font-mono text-3xl font-bold text-blue-600">192.168.100.1</p>
-        </a>
-      </div>
-    </div>
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
 
-    <!-- Brands -->
-    <div>
-      <h2 class="heading-font text-2xl font-semibold mb-10 text-center">Supported Router Brands</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-        <!-- TP-Link -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/TPLINK_Logo_2.svg/512px-TPLINK_Logo_2.svg.png" alt="TP-Link" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">TP-Link</h3>
-        </a>
+    .hero p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: auto;
+      line-height: 1.6;
+    }
 
-        <!-- Huawei -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Huawei_Logo.svg/512px-Huawei_Logo.svg.png" alt="Huawei" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">Huawei</h3>
-        </a>
+    .notice {
+      margin-top: 18px;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      display: inline-block;
+      color: var(--muted);
+    }
 
-        <!-- Netgear -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Netgear_logo.svg/512px-Netgear_logo.svg.png" alt="Netgear" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">Netgear</h3>
-        </a>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
 
-        <!-- ASUS -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Asus_Logo.svg/512px-Asus_Logo.svg.png" alt="ASUS" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">ASUS</h3>
-        </a>
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
 
-        <!-- MikroTik -->
-        <a href="http://192.168.88.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://mikrotik.com/images/logo.svg" alt="MikroTik" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">MikroTik</h3>
-        </a>
+    .card:hover {
+      transform: translateY(-3px);
+    }
 
-        <!-- D-Link -->
-        <a href="http://192.168.0.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/D-Link_wordmark.svg/512px-D-Link_wordmark.svg.png" alt="D-Link" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">D-Link</h3>
-        </a>
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
 
-        <!-- ZTE -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ZTE_Logo.svg/512px-ZTE_Logo.svg.png" alt="ZTE" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">ZTE</h3>
-        </a>
+    .card p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
 
-        <!-- Linksys -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Linksys_logo.svg/512px-Linksys_logo.svg.png" alt="Linksys" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">Linksys</h3>
-        </a>
+    .btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 600;
+    }
 
-        <!-- Xiaomi -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Xiaomi_logo.svg/512px-Xiaomi_logo.svg.png" alt="Xiaomi" class="h-11 mx-auto mb-5">
-          <h3 class="font-semibold">Xiaomi</h3>
-        </a>
+    .brands {
+      margin-top: 70px;
+    }
 
-        <!-- Tenda -->
-        <a href="http://192.168.1.1" target="_blank" class="brand-card bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center hover:border-blue-500">
-          <div class="h-11 flex items-center justify-center text-3xl font-bold text-rose-600 mb-5">Tenda</div>
-          <h3 class="font-semibold">Tenda</h3>
-        </a>
-      </div>
-    </div>
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .brand:hover {
+      transform: translateY(-2px);
+    }
+
+    .brand img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .copyright {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style></head>
+<body><div class="container">  <header>
+    <div class="logo">SautiLink Router</div>
+    <button class="theme-btn" id="toggle">Toggle Mode</button>
+  </header>  <section class="hero">
+    <h1>Router Setup Gateway</h1>
+    <p>Quick access to your router admin pages. Connect to your WiFi network before proceeding.</p>
+    <div class="notice">Make sure you are connected to your WiFi router before opening setup.</div>
+  </section>  <section class="grid"><div class="card">
+  <h3>192.168.1.1</h3>
+  <p>Main router login address for most home routers.</p>
+  <a class="btn" href="http://192.168.1.1">Open</a>
+</div>
+
+<div class="card">
+  <h3>192.168.0.1</h3>
+  <p>Alternative default gateway for many routers.</p>
+  <a class="btn" href="http://192.168.0.1">Open</a>
+</div>
+
+<div class="card">
+  <h3>10.0.0.1</h3>
+  <p>Common for ISP and fiber routers.</p>
+  <a class="btn" href="http://10.0.0.1">Open</a>
+</div>
+
+<div class="card">
+  <h3>192.168.100.1</h3>
+  <p>Used by modems and mobile broadband devices.</p>
+  <a class="btn" href="http://192.168.100.1">Open</a>
+</div>
+
+  </section>  <section class="brands">
+    <h2>Router Brands</h2><div class="brand-grid">
+  <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
+  <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
+  <a class="brand" href="http://192.168.88.1"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
+  <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
+  <a class="brand" href="http://192.168.0.1"><img src="https://logo.clearbit.com/dlink.com">D-Link</a>
+</div>
+
+  </section></div><footer>
+  <div class="footer-links">
+    <a href="https://www.sautilink.com">Home</a>
+    <a href="https://sautilink.com/privacy">Privacy</a>
+    <a href="https://sautilink.com/terms">Terms</a>
+    <a href="https://sautilink.com/faq">FAQ</a>
+    <a href="https://sautilink.com/contact">Contact</a>
+    <a href="https://sautilink.com/help">Help</a>
   </div>
-
-  <!-- Footer -->
-  <footer class="bg-zinc-900 text-zinc-400 py-14 mt-20">
-    <div class="max-w-7xl mx-auto px-8">
-      <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm mb-8">
-        <a href="https://www.sautilink.com" class="hover:text-white transition">Home</a>
-        <a href="https://sautilink.com/privacy" class="hover:text-white transition">Privacy</a>
-        <a href="https://sautilink.com/terms" class="hover:text-white transition">Terms</a>
-        <a href="https://sautilink.com/faq" class="hover:text-white transition">FAQ</a>
-        <a href="https://sautilink.com/contact" class="hover:text-white transition">Contact</a>
-        <a href="https://sautilink.com/help" class="hover:text-white transition">Help</a>
-      </div>
-      <div class="text-center text-sm">
-        © 2026 - SautiLink Corporation. All rights reserved.
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Dark Mode Toggle
-    const toggle = document.getElementById('theme-toggle');
-    const icon = document.getElementById('theme-icon');
-
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      icon.classList.replace('fa-moon', 'fa-sun');
-    }
-
-    toggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      if (document.documentElement.classList.contains('dark')) {
-        icon.classList.replace('fa-moon', 'fa-sun');
-        localStorage.theme = 'dark';
-      } else {
-        icon.classList.replace('fa-sun', 'fa-moon');
-        localStorage.theme = 'light';
-      }
-    });
-  </script>
-</body>
+  <div class="copyright">© 2026 - SautiLink Corporation. All rights reserved.</div>
+</footer><script>
+  const btn = document.getElementById('toggle');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+  });
+</script></body>
 </html>
