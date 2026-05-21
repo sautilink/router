@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#070b18" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
   <meta property="og:description" content="Access your router admin page instantly with SautiLink Router Gateway." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA Manifest -->  <link rel="manifest" href="data:application/manifest+json,{\"name\":\"SautiLink Router\",\"short_name\":\"Router\",\"start_url\":\"/\",\"display\":\"standalone\",\"background_color\":\"#070b18\",\"theme_color\":\"#070b18\",\"icons\":[{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"192x192\",\"type\":\"image/png\"},{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}" />  <style>
+  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA MANIFEST (external for production) -->  <link rel="manifest" href="/manifest.json">  <style>
     :root{
       --bg:#070b18;
       --card:#0f172a;
@@ -52,7 +52,7 @@
       margin-bottom:40px;
     }
 
-    .logo{font-size:1.6rem;font-weight:800;letter-spacing:-1px;}
+    .logo{font-size:1.6rem;font-weight:800;}
     .logo span{color:var(--primary);}
 
     .theme-btn,.install-btn{
@@ -66,9 +66,7 @@
     }
 
     .hero{text-align:center;margin-bottom:30px;}
-
     .hero h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-2px;}
-
     .hero p{color:var(--muted);max-width:720px;margin:12px auto;}
 
     .notice{
@@ -82,7 +80,6 @@
     }
 
     .search{margin:25px auto;max-width:500px;display:flex;}
-
     .search input{
       width:100%;
       padding:14px;
@@ -123,7 +120,6 @@
     }
 
     .brands{margin-top:60px;}
-
     .brands h2{color:var(--primary);}
 
     .brand-grid{
@@ -180,6 +176,7 @@
   <div class="logo">Sauti<span>Link</span> Router</div>
   <div>
     <button class="theme-btn" onclick="toggleTheme()">Theme</button>
+    <button class="install-btn" id="installBtn">Install</button>
   </div>
 </header><section class="hero">
   <h1>Router Setup Gateway</h1>
@@ -187,24 +184,18 @@
   <div class="notice">Ensure you are connected to WiFi before proceeding.</div>
 </section><section class="search">
   <input type="text" placeholder="Search router IP or brand..." onkeyup="filterCards(this.value)">
-</section><section class="grid" id="cards">  <div class="card" data-name="192.168.1.1">
-    <h3>192.168.1.1</h3>
-    <a class="btn" href="http://192.168.1.1">OPEN</a>
-  </div>  <div class="card" data-name="192.168.0.1">
-    <h3>192.168.0.1</h3>
-    <a class="btn" href="http://192.168.0.1">OPEN</a>
-  </div>  <div class="card" data-name="10.0.0.1">
-    <h3>10.0.0.1</h3>
-    <a class="btn" href="http://10.0.0.1">OPEN</a>
-  </div>  <div class="card" data-name="192.168.100.1">
-    <h3>192.168.100.1</h3>
-    <a class="btn" href="http://192.168.100.1">OPEN</a>
-  </div></section><section class="brands">
-  <h2>BRANDS</h2>  <div class="brand-grid">
-    <a class="brand" href="#"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
-    <a class="brand" href="#"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
-    <a class="brand" href="#"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
-    <a class="brand" href="#"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
+</section><section class="grid" id="cards">
+  <div class="card" data-name="192.168.1.1"><h3>192.168.1.1</h3><a class="btn" href="http://192.168.1.1">OPEN</a></div>
+  <div class="card" data-name="192.168.0.1"><h3>192.168.0.1</h3><a class="btn" href="http://192.168.0.1">OPEN</a></div>
+  <div class="card" data-name="10.0.0.1"><h3>10.0.0.1</h3><a class="btn" href="http://10.0.0.1">OPEN</a></div>
+  <div class="card" data-name="192.168.100.1"><h3>192.168.100.1</h3><a class="btn" href="http://192.168.100.1">OPEN</a></div>
+</section><section class="brands">
+  <h2>BRANDS</h2>
+  <div class="brand-grid">
+    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
+    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
+    <a class="brand" href="http://192.168.88.1"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
+    <a class="brand" href="http://192.168.1.1"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
   </div>
 </section></div><footer>
   <div class="footer-links">
@@ -231,7 +222,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 function installApp(){
   if(!deferredPrompt) return;
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.finally(()=> deferredPrompt=null);
+  deferredPrompt.userChoice.then(()=>deferredPrompt=null);
 }
 
 function toggleTheme(){
@@ -243,5 +234,43 @@ function filterCards(v){
     c.style.display = c.dataset.name.includes(v.toLowerCase()) ? 'block':'none';
   });
 }
+
+// Register real service worker
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js');
+}
 </script></body>
-</html>
+</html><!-- ===================== PWA FILES ===================== --><!-- manifest.json --><!--
+{
+  "name": "SautiLink Router",
+  "short_name": "Router",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b18",
+  "theme_color": "#070b18",
+  "icons": [
+    {
+      "src": "https://logo.clearbit.com/sautilink.com",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://logo.clearbit.com/sautilink.com",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+--><!-- sw.js --><!--
+self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+});
+-->
