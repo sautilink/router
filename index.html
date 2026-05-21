@@ -6,227 +6,207 @@
   <meta name="theme-color" content="#070b18" />  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
   <meta property="og:description" content="Access your router admin page instantly with SautiLink Router Gateway." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA Manifest (inline via data URL) -->  <link rel="manifest" href="data:application/manifest+json,{\"name\":\"SautiLink Router\",\"short_name\":\"Router\",\"start_url\":\"/\",\"display\":\"standalone\",\"background_color\":\"#070b18\",\"theme_color\":\"#070b18\",\"icons\":[{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"192x192\",\"type\":\"image/png\"},{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}" />  <style>
-    :root {
-      --bg: #070b18;
-      --card: #0f172a;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --border: rgba(255,255,255,0.08);
-      --primary: #f8fafc;
-      --shadow: 0 12px 30px rgba(0,0,0,0.4);
+  <meta property="og:url" content="https://router.sautilink.com" />  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  <!-- PWA Manifest -->  <link rel="manifest" href="data:application/manifest+json,{\"name\":\"SautiLink Router\",\"short_name\":\"Router\",\"start_url\":\"/\",\"display\":\"standalone\",\"background_color\":\"#070b18\",\"theme_color\":\"#070b18\",\"icons\":[{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"192x192\",\"type\":\"image/png\"},{\"src\":\"https://logo.clearbit.com/sautilink.com\",\"sizes\":\"512x512\",\"type\":\"image/png\"}]}" />  <style>
+    :root{
+      --bg:#070b18;
+      --card:#0f172a;
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --border:rgba(255,255,255,0.08);
+      --primary:#e11b1b;
+      --shadow:0 12px 30px rgba(0,0,0,0.4);
     }
 
-    body.light {
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: rgba(15, 23, 42, 0.08);
-      --primary: #0f172a;
-      --shadow: 0 12px 30px rgba(0,0,0,0.08);
+    body.light{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:rgba(15,23,42,0.08);
+      --primary:#e11b1b;
+      --shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Bricolage Grotesque', sans-serif;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Bricolage Grotesque',sans-serif;
     }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      transition: 0.25s ease;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    body{
+      background:var(--bg);
+      color:var(--text);
+      transition:.25s ease;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 24px;
+    .container{max-width:1200px;margin:auto;padding:24px;}
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:40px;
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
+    .logo{font-size:1.6rem;font-weight:800;letter-spacing:-1px;}
+    .logo span{color:var(--primary);}
+
+    .theme-btn,.install-btn{
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      cursor:pointer;
+      margin-left:8px;
     }
 
-    .logo {
-      font-size: 1.6rem;
-      font-weight: 800;
+    .hero{text-align:center;margin-bottom:30px;}
+
+    .hero h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-2px;}
+
+    .hero p{color:var(--muted);max-width:720px;margin:12px auto;}
+
+    .notice{
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:12px;
+      background:var(--card);
+      border:1px solid var(--border);
+      color:var(--muted);
+      margin-top:10px;
     }
 
-    .theme-btn, .install-btn {
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      cursor: pointer;
-      margin-left: 8px;
+    .search{margin:25px auto;max-width:500px;display:flex;}
+
+    .search input{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      outline:none;
     }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 30px;
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:16px;
+      margin-top:20px;
     }
 
-    .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      letter-spacing: -2px;
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      transition:.2s;
     }
 
-    .hero p {
-      color: var(--muted);
-      max-width: 720px;
-      margin: 12px auto;
+    .card:hover{transform:translateY(-3px);}
+
+    .btn{
+      display:block;
+      text-align:center;
+      padding:12px;
+      border-radius:12px;
+      background:var(--primary);
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
     }
 
-    .notice {
-      display: inline-block;
-      padding: 12px 16px;
-      border-radius: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      margin-top: 10px;
+    .brands{margin-top:60px;}
+
+    .brands h2{color:var(--primary);}
+
+    .brand-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
     }
 
-    .search {
-      margin: 25px auto;
-      max-width: 500px;
-      display: flex;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--card);
+      text-decoration:none;
+      color:var(--text);
+      font-weight:600;
     }
 
-    .search input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      outline: none;
+    footer{
+      margin-top:auto;
+      padding:40px;
+      text-align:center;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:10px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      transition: 0.2s;
+    .footer-links a{color:var(--muted);text-decoration:none;}
+
+    .copyright{color:var(--muted);font-size:.9rem;}
+
+    .install-banner{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:var(--card);
+      border:1px solid var(--border);
+      padding:12px 16px;
+      border-radius:12px;
+      display:none;
+      gap:10px;
+      align-items:center;
     }
-
-    .card:hover { transform: translateY(-3px); }
-
-    .btn {
-      display: block;
-      text-align: center;
-      padding: 12px;
-      border-radius: 12px;
-      background: var(--primary);
-      color: var(--bg);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .brands { margin-top: 60px; }
-
-    .brand-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 40px;
-      text-align: center;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .footer-links a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-
-    .copyright {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .install-banner {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      border-radius: 14px;
-      display: none;
-      gap: 10px;
-      align-items: center;
-    }
-  </style></head><body class="dark"><div class="container">  <header>
-    <div class="logo">SautiLink Router</div>
-    <div>
-      <button class="theme-btn" onclick="toggleTheme()">Theme</button>
-      <button class="install-btn" id="installBtn">Install App</button>
-    </div>
-  </header>  <section class="hero">
-    <h1>Router Setup Gateway</h1>
-    <p>Search and open your router admin page instantly.</p>
-    <div class="notice">Ensure you are connected to WiFi before proceeding.</div><div class="search">
-  <input type="text" placeholder="Search router IP or brand..." onkeyup="filterCards(this.value)" />
-</div>
-
-  </section>  <section class="grid" id="cards"><div class="card" data-name="192.168.1.1"><h3>192.168.1.1</h3><a class="btn" href="http://192.168.1.1">Open</a></div>
-<div class="card" data-name="192.168.0.1"><h3>192.168.0.1</h3><a class="btn" href="http://192.168.0.1">Open</a></div>
-<div class="card" data-name="10.0.0.1"><h3>10.0.0.1</h3><a class="btn" href="http://10.0.0.1">Open</a></div>
-<div class="card" data-name="192.168.100.1"><h3>192.168.100.1</h3><a class="btn" href="http://192.168.100.1">Open</a></div>
-
-  </section>  <section class="brands">
-    <h2>Brands</h2>
-    <div class="brand-grid">
-      <a class="brand" href="http://192.168.1.1">TP-Link</a>
-      <a class="brand" href="http://192.168.1.1">Huawei</a>
-      <a class="brand" href="http://192.168.88.1">MikroTik</a>
-      <a class="brand" href="http://192.168.1.1">ZTE</a>
-    </div>
-  </section></div><footer>
+  </style></head><body class="dark"><div class="container"><header>
+  <div class="logo">Sauti<span>Link</span> Router</div>
+  <div>
+    <button class="theme-btn" onclick="toggleTheme()">Theme</button>
+  </div>
+</header><section class="hero">
+  <h1>Router Setup Gateway</h1>
+  <p>Search and open your router admin page instantly.</p>
+  <div class="notice">Ensure you are connected to WiFi before proceeding.</div>
+</section><section class="search">
+  <input type="text" placeholder="Search router IP or brand..." onkeyup="filterCards(this.value)">
+</section><section class="grid" id="cards">  <div class="card" data-name="192.168.1.1">
+    <h3>192.168.1.1</h3>
+    <a class="btn" href="http://192.168.1.1">OPEN</a>
+  </div>  <div class="card" data-name="192.168.0.1">
+    <h3>192.168.0.1</h3>
+    <a class="btn" href="http://192.168.0.1">OPEN</a>
+  </div>  <div class="card" data-name="10.0.0.1">
+    <h3>10.0.0.1</h3>
+    <a class="btn" href="http://10.0.0.1">OPEN</a>
+  </div>  <div class="card" data-name="192.168.100.1">
+    <h3>192.168.100.1</h3>
+    <a class="btn" href="http://192.168.100.1">OPEN</a>
+  </div></section><section class="brands">
+  <h2>BRANDS</h2>  <div class="brand-grid">
+    <a class="brand" href="#"><img src="https://logo.clearbit.com/tp-link.com">TP-Link</a>
+    <a class="brand" href="#"><img src="https://logo.clearbit.com/huawei.com">Huawei</a>
+    <a class="brand" href="#"><img src="https://logo.clearbit.com/mikrotik.com">MikroTik</a>
+    <a class="brand" href="#"><img src="https://logo.clearbit.com/zte.com.cn">ZTE</a>
+  </div>
+</section></div><footer>
   <div class="footer-links">
     <a href="https://www.sautilink.com">Home</a>
     <a href="https://sautilink.com/privacy">Privacy</a>
@@ -248,33 +228,20 @@ window.addEventListener('beforeinstallprompt', (e) => {
   document.getElementById('installBanner').style.display = 'flex';
 });
 
-function installApp() {
-  if (!deferredPrompt) return;
+function installApp(){
+  if(!deferredPrompt) return;
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => {
-    deferredPrompt = null;
-  });
+  deferredPrompt.userChoice.finally(()=> deferredPrompt=null);
 }
 
-function toggleTheme() {
+function toggleTheme(){
   document.body.classList.toggle('light');
 }
 
-function filterCards(value) {
-  document.querySelectorAll('.card').forEach(c => {
-    c.style.display = c.dataset.name.includes(value.toLowerCase()) ? 'block' : 'none';
+function filterCards(v){
+  document.querySelectorAll('.card').forEach(c=>{
+    c.style.display = c.dataset.name.includes(v.toLowerCase()) ? 'block':'none';
   });
-}
-
-if ('serviceWorker' in navigator) {
-  const sw = `
-  self.addEventListener('install', e => self.skipWaiting());
-  self.addEventListener('fetch', e => {});
-  `;
-
-  const blob = new Blob([sw], {type: 'application/javascript'});
-  const swURL = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swURL);
 }
 </script></body>
 </html>
