@@ -6,13 +6,8 @@
 
   <title>Router Setup Gateway — SautiLink</title>
 
-  <meta name="description" content="Quick access to router admin pages with SautiLink Router Gateway. Open router IPs and manage your network easily." />
+  <meta name="description" content="Quick access to router admin pages with SautiLink Router Gateway." />
   <meta name="theme-color" content="#070b18" />
-
-  <meta property="og:title" content="Router Setup Gateway — SautiLink" />
-  <meta property="og:description" content="Access router admin pages instantly with SautiLink Router Gateway." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://router.sautilink.com" />
 
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -52,7 +47,6 @@
       min-height:100vh;
       display:flex;
       flex-direction:column;
-      transition:.25s ease;
     }
 
     .container{
@@ -98,11 +92,10 @@
 
     .hero p{
       color:var(--muted);
-      margin-top:10px;
     }
 
     .notice{
-      margin-top:12px;
+      margin-top:10px;
       display:inline-block;
       padding:12px 16px;
       border-radius:12px;
@@ -123,14 +116,12 @@
       border:1px solid var(--border);
       background:var(--card);
       color:var(--text);
-      outline:none;
     }
 
     .grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
       gap:16px;
-      margin-top:20px;
     }
 
     .card{
@@ -139,6 +130,8 @@
       border-radius:18px;
       padding:20px;
       box-shadow:var(--shadow);
+      text-decoration:none;
+      color:var(--text);
       transition:.2s;
     }
 
@@ -156,16 +149,6 @@
       font-weight:700;
       text-decoration:none;
       margin-top:10px;
-    }
-
-    .brands{
-      margin-top:60px;
-    }
-
-    .brands h2{
-      text-align:center;
-      color:var(--primary);
-      margin-bottom:15px;
     }
 
     footer{
@@ -191,11 +174,10 @@
       color:var(--muted);
       font-size:.9rem;
     }
-
   </style>
 </head>
 
-<body class="dark">
+<body>
 
 <div class="container">
 
@@ -206,8 +188,8 @@
 
 <section class="hero">
   <h1>Router Setup Gateway</h1>
-  <p>Open router admin pages instantly and manage your network easily.</p>
-  <div class="notice">Make sure you are connected to your WiFi router.</div>
+  <p>Open router admin pages instantly.</p>
+  <div class="notice">Make sure you're connected to WiFi router.</div>
 </section>
 
 <section class="search">
@@ -218,48 +200,54 @@
 
   <div class="card" data-name="192.168.1.1">
     <h3>192.168.1.1</h3>
-    <a class="btn" href="http://192.168.1.1">OPEN</a>
+    <a class="btn" href="http://192.168.1.1" target="_blank">OPEN</a>
   </div>
 
   <div class="card" data-name="192.168.0.1">
     <h3>192.168.0.1</h3>
-    <a class="btn" href="http://192.168.0.1">OPEN</a>
+    <a class="btn" href="http://192.168.0.1" target="_blank">OPEN</a>
   </div>
 
   <div class="card" data-name="10.0.0.1">
     <h3>10.0.0.1</h3>
-    <a class="btn" href="http://10.0.0.1">OPEN</a>
+    <a class="btn" href="http://10.0.0.1" target="_blank">OPEN</a>
   </div>
 
   <div class="card" data-name="192.168.100.1">
     <h3>192.168.100.1</h3>
-    <a class="btn" href="http://192.168.100.1">OPEN</a>
+    <a class="btn" href="http://192.168.100.1" target="_blank">OPEN</a>
   </div>
 
 </section>
 
-<!-- BRANDS (TEXT ONLY) -->
-<section class="brands">
+<!-- BRANDS FIXED -->
+<section style="margin-top:60px;">
 
-  <h2>BRANDS</h2>
+  <h2 style="text-align:center; color:var(--primary); margin-bottom:15px;">
+    BRANDS
+  </h2>
 
   <div class="grid">
 
-    <div class="card">
+    <a class="card" href="http://192.168.0.1" target="_blank">
       <h3>TP-Link</h3>
-    </div>
+      <p style="color:var(--muted)">Open router admin</p>
+    </a>
 
-    <div class="card">
+    <a class="card" href="http://192.168.1.1" target="_blank">
       <h3>Huawei</h3>
-    </div>
+      <p style="color:var(--muted)">Open router admin</p>
+    </a>
 
-    <div class="card">
+    <a class="card" href="http://192.168.88.1" target="_blank">
       <h3>MikroTik</h3>
-    </div>
+      <p style="color:var(--muted)">Open router admin</p>
+    </a>
 
-    <div class="card">
+    <a class="card" href="http://192.168.1.1" target="_blank">
       <h3>ZTE</h3>
-    </div>
+      <p style="color:var(--muted)">Open router admin</p>
+    </a>
 
   </div>
 
@@ -296,10 +284,6 @@ function filterCards(value){
       ? "block"
       : "none";
   });
-}
-
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("/sw.js");
 }
 
 </script>
