@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#070b18",
-  "theme_color": "#070b18",
+  "theme_color": "#2563eb",
   "description": "Quick access to router admin pages and network tools via SautiLink Router Gateway.",
   "icons": [
     {

@@ -1,9 +1,14 @@
-const CACHE_NAME = "sautilink-router-v1";
+const CACHE_NAME = "sautilink-router-v2";
 
 const urlsToCache = [
   "/",
   "/index.html",
-  "/manifest.json"
+  "/manifest.json",
+  "/assets/brand/system.css",
+  "/assets/fonts/lora/Lora-Variable.woff2",
+  "/assets/fonts/lora/Lora-VariableItalic.woff2",
+  "/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2",
+  "/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-VariableItalic.woff2"
 ];
 
 // Install event
