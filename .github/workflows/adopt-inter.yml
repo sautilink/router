@@ -87,54 +87,8 @@ jobs:
                   out.append('  "/assets/fonts/inter/InterVariable-Italic.woff2",')
           sw.write_text("\n".join(out) + "\n", encoding='utf-8')
           PY
-          cat > .github/workflows/brand-guard.yml <<'YAML'
-          name: SautiLink Brand Guard
-
-          on:
-            pull_request:
-            push:
-              branches: [main]
-
-          permissions:
-            contents: read
-
-          jobs:
-            verify-brand:
-              runs-on: ubuntu-latest
-              steps:
-                - uses: actions/checkout@v4
-                - uses: actions/setup-python@v5
-                  with:
-                    python-version: "3.12"
-                - name: Verify Inter-only brand system
-                  shell: python
-                  run: |
-                    from pathlib import Path
-                    required = ["assets/fonts/inter/InterVariable.woff2", "assets/fonts/inter/InterVariable-Italic.woff2", "assets/fonts/inter/OFL.txt", "assets/brand/system.css"]
-                    for item in required:
-                        p = Path(item)
-                        assert p.exists(), f"missing brand asset: {item}"
-                        assert p.stat().st_size > 0, f"empty brand asset: {item}"
-                    assert not Path("assets/fonts/lora").exists()
-                    assert not Path("assets/fonts/zalando-sans-semiexpanded").exists()
-                    css = Path("assets/brand/system.css").read_text(encoding="utf-8")
-                    for token in ["#2563eb", "#60a5fa", "#ffffff", '"Inter"', "100 900"]:
-                        assert token.lower() in css.lower()
-                    assert "Lora" not in css and "Zalando" not in css
-                    html = Path("index.html").read_text(encoding="utf-8")
-                    assert "/assets/fonts/inter/InterVariable.woff2" in html
-                    assert "/assets/brand/system.css" in html
-                    lowered = html.lower()
-                    for legacy in ["fonts.googleapis.com", "fonts.gstatic.com", "bricolage grotesque", "lora-variable", "zalando", "#e11d48", "#be123c", "#e11b1b"]:
-                        assert legacy not in lowered
-                    sw = Path("sw.js").read_text(encoding="utf-8")
-                    assert "sautilink-router-v3" in sw
-                    assert "/assets/fonts/inter/InterVariable.woff2" in sw
-                    assert "/assets/fonts/inter/InterVariable-Italic.woff2" in sw
-          YAML
-          rm .github/workflows/adopt-inter.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add assets index.html sw.js
           git commit -m "Adopt Inter as the single SautiLink font"
           git push origin inter-single-font
