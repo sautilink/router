@@ -1,0 +1,73 @@
+name: Vendor SautiLink Brand System
+
+on:
+  push:
+    branches: [brand-system-rollout]
+    paths:
+      - ".github/workflows/vendor-brand-system.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rollout:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: brand-system-rollout
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "fonttools[woff]"
+      - name: Vendor fonts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/fonts/lora assets/fonts/zalando-sans-semiexpanded assets/brand
+          curl -fsSL "https://raw.githubusercontent.com/cyrealtype/Lora-Cyrillic/403b1a66ca2e79f81d749c5299559e168591a4df/fonts/variable/Lora%5Bwght%5D.ttf" -o /tmp/lora.ttf
+          curl -fsSL "https://raw.githubusercontent.com/cyrealtype/Lora-Cyrillic/403b1a66ca2e79f81d749c5299559e168591a4df/fonts/variable/Lora-Italic%5Bwght%5D.ttf" -o /tmp/lora-italic.ttf
+          curl -fsSL "https://raw.githubusercontent.com/cyrealtype/Lora-Cyrillic/403b1a66ca2e79f81d749c5299559e168591a4df/OFL.txt" -o assets/fonts/lora/OFL.txt
+          curl -fsSL "https://raw.githubusercontent.com/zalando/sans/4e44d0864c4e37ab67fa549cd188aec8776dc948/fonts/variable/ZalandoSansSemiExpanded%5Bwght%5D.ttf" -o /tmp/zalando.ttf
+          curl -fsSL "https://raw.githubusercontent.com/zalando/sans/4e44d0864c4e37ab67fa549cd188aec8776dc948/fonts/variable/ZalandoSansSemiExpanded-Italic%5Bwght%5D.ttf" -o /tmp/zalando-italic.ttf
+          curl -fsSL "https://raw.githubusercontent.com/zalando/sans/4e44d0864c4e37ab67fa549cd188aec8776dc948/OFL.txt" -o assets/fonts/zalando-sans-semiexpanded/OFL.txt
+      - name: Convert and apply brand system
+        shell: python
+        run: |
+          from fontTools.ttLib import TTFont
+          from pathlib import Path
+          import json,re
+          pairs=[("/tmp/lora.ttf","assets/fonts/lora/Lora-Variable.woff2"),("/tmp/lora-italic.ttf","assets/fonts/lora/Lora-VariableItalic.woff2"),("/tmp/zalando.ttf","assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2"),("/tmp/zalando-italic.ttf","assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-VariableItalic.woff2")]
+          for src,dest in pairs:
+            f=TTFont(src); f.flavor="woff2"; f.save(dest)
+          css='''@font-face{font-family:"Lora";src:url("/assets/fonts/lora/Lora-Variable.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap;}\n@font-face{font-family:"Lora";src:url("/assets/fonts/lora/Lora-VariableItalic.woff2") format("woff2");font-style:italic;font-weight:400 700;font-display:swap;}\n@font-face{font-family:"Zalando Sans SemiExpanded";src:url("/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2") format("woff2");font-style:normal;font-weight:200 900;font-display:swap;}\n@font-face{font-family:"Zalando Sans SemiExpanded";src:url("/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-VariableItalic.woff2") format("woff2");font-style:italic;font-weight:200 900;font-display:swap;}\n:root{--brand-primary:#2563eb;--brand-primary-hover:#1d4ed8;--brand-light:#60a5fa;--brand-white:#ffffff;--font-primary:"Lora",Georgia,"Times New Roman",serif;--font-brand:"Zalando Sans SemiExpanded",Arial,sans-serif;--primary:var(--brand-primary);}\nhtml,body,button,input,textarea,select{font-family:var(--font-primary)!important}.logo,footer,.copyright,[data-brand-font]{font-family:var(--font-brand)!important}::selection{background:var(--brand-light);color:#0f172a}\n'''
+          Path("assets/brand/system.css").write_text(css,encoding="utf-8")
+          Path("assets/brand/README.md").write_text("# SautiLink Corporation Brand System\n\nLora = primary. Zalando Sans SemiExpanded = corporate/footer.\n\nPrimary Blue `#2563EB`, Light Blue `#60A5FA`, White `#FFFFFF`.\n",encoding="utf-8")
+          p=Path("index.html"); text=p.read_text(encoding="utf-8")
+          text="\n".join(line for line in text.splitlines() if "fonts.googleapis.com" not in line and "fonts.gstatic.com" not in line)+"\n"
+          text=text.replace("#e11b1b","#2563eb").replace("#E11B1B","#2563EB")
+          text=re.sub(r"font-family:\s*['\"]Bricolage Grotesque['\"][^;]*;","font-family:var(--font-primary);",text)
+          text=re.sub(r'(<meta\s+name=["\']theme-color["\']\s+content=["\'])#[0-9a-fA-F]{6}(["\'])',r'\1#2563eb\2',text)
+          inject='''  <link rel="preload" href="/assets/fonts/lora/Lora-Variable.woff2" as="font" type="font/woff2" crossorigin />\n  <link rel="preload" href="/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2" as="font" type="font/woff2" crossorigin />\n  <link rel="stylesheet" href="/assets/brand/system.css" />\n'''
+          if "/assets/brand/system.css" not in text: text=text.replace("</head>",inject+"</head>",1)
+          p.write_text(text,encoding="utf-8")
+
+          manifest=json.loads(Path("manifest.json").read_text(encoding="utf-8"))
+          manifest["theme_color"]="#2563eb"
+          Path("manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
+
+          sw=Path("sw.js").read_text(encoding="utf-8")
+          sw=sw.replace('sautilink-router-v1','sautilink-router-v2')
+          sw=sw.replace('  "/manifest.json"\n', '  "/manifest.json",\n  "/assets/brand/system.css",\n  "/assets/fonts/lora/Lora-Variable.woff2",\n  "/assets/fonts/lora/Lora-VariableItalic.woff2",\n  "/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2",\n  "/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-VariableItalic.woff2"\n')
+          Path("sw.js").write_text(sw,encoding="utf-8")
+      - name: Commit rollout
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets index.html manifest.json sw.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Apply SautiLink corporate brand system"
+          git push origin HEAD:brand-system-rollout
