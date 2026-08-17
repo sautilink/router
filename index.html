@@ -7,9 +7,8 @@
   <title>Router Setup Gateway — SautiLink</title>
 
   <meta name="description" content="Quick access to router admin pages with SautiLink Router Gateway." />
-  <meta name="theme-color" content="#070b18" />
+  <meta name="theme-color" content="#2563eb" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="manifest" href="/manifest.json">
 
@@ -20,7 +19,7 @@
       --text:#f8fafc;
       --muted:#94a3b8;
       --border:rgba(255,255,255,0.08);
-      --primary:#e11b1b;
+      --primary:#2563eb;
       --shadow:0 12px 30px rgba(0,0,0,0.4);
     }
 
@@ -30,7 +29,7 @@
       --text:#0f172a;
       --muted:#64748b;
       --border:rgba(15,23,42,0.08);
-      --primary:#e11b1b;
+      --primary:#2563eb;
       --shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
@@ -38,7 +37,7 @@
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:'Bricolage Grotesque',sans-serif;
+      font-family:var(--font-primary);
     }
 
     body{
@@ -175,6 +174,9 @@
       font-size:.9rem;
     }
   </style>
+  <link rel="preload" href="/assets/fonts/lora/Lora-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/assets/brand/system.css" />
 </head>
 
 <body>
