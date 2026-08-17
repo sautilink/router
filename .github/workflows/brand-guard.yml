@@ -16,25 +16,30 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Verify brand assets, PWA cache, and page
+      - name: Verify Inter-only brand system and PWA cache
         shell: python
         run: |
           from pathlib import Path
           import json
-          required=["assets/fonts/lora/Lora-Variable.woff2","assets/fonts/lora/Lora-VariableItalic.woff2","assets/fonts/lora/OFL.txt","assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2","assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-VariableItalic.woff2","assets/fonts/zalando-sans-semiexpanded/OFL.txt","assets/brand/system.css"]
+          required=["assets/fonts/inter/InterVariable.woff2","assets/fonts/inter/InterVariable-Italic.woff2","assets/fonts/inter/OFL.txt","assets/brand/system.css"]
           for item in required:
               p=Path(item); assert p.exists() and p.stat().st_size>0, f"missing/empty brand asset: {item}"
-          css=Path("assets/brand/system.css").read_text(encoding="utf-8").lower()
-          for token in ["#2563eb","#60a5fa","#ffffff","lora","zalando sans semiexpanded"]: assert token in css, f"missing token {token}"
+          assert not Path("assets/fonts/lora").exists()
+          assert not Path("assets/fonts/zalando-sans-semiexpanded").exists()
+          css=Path("assets/brand/system.css").read_text(encoding="utf-8")
+          lowered_css=css.lower()
+          for token in ["#2563eb","#60a5fa","#ffffff",'"inter"',"100 900"]: assert token in lowered_css, f"missing token {token}"
+          assert "lora" not in lowered_css and "zalando" not in lowered_css and "--font-brand" not in lowered_css
           assert "http://" not in css and "https://" not in css
           html=Path("index.html").read_text(encoding="utf-8")
           assert "/assets/brand/system.css" in html
-          assert "fonts.googleapis.com" not in html and "fonts.gstatic.com" not in html
-          assert "Bricolage Grotesque" not in html
-          assert "#e11b1b" not in html.lower()
+          assert "/assets/fonts/inter/InterVariable.woff2" in html
+          lowered=html.lower()
+          for legacy in ["fonts.googleapis.com","fonts.gstatic.com","bricolage grotesque","lora-variable","zalando","#e11b1b"]:
+              assert legacy not in lowered, f"legacy brand token remains: {legacy}"
           manifest=json.loads(Path("manifest.json").read_text(encoding="utf-8"))
           assert manifest.get("theme_color","").lower()=="#2563eb"
           sw=Path("sw.js").read_text(encoding="utf-8")
-          assert "sautilink-router-v2" in sw
-          for item in ["/assets/brand/system.css","/assets/fonts/lora/Lora-Variable.woff2","/assets/fonts/zalando-sans-semiexpanded/ZalandoSansSemiExpanded-Variable.woff2"]:
+          assert "sautilink-router-v3" in sw
+          for item in ["/assets/brand/system.css","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
               assert item in sw, f"PWA cache missing {item}"
