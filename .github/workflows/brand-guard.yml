@@ -21,7 +21,7 @@ jobs:
         run: |
           from pathlib import Path
           import json
-          required=["assets/fonts/inter/InterVariable.woff2","assets/fonts/inter/InterVariable-Italic.woff2","assets/fonts/inter/OFL.txt","assets/brand/system.css","assets/app.css","assets/app.js","assets/router-catalog.json","assets/router-setup-preview.png","robots.txt","sitemap.xml","llms.txt","src/index.js"]
+          required=["SautiLink Router Logo.png","SautiLink Router Logo.jpg.jpeg","assets/fonts/inter/InterVariable.woff2","assets/fonts/inter/InterVariable-Italic.woff2","assets/fonts/inter/OFL.txt","assets/brand/system.css","assets/app.css","assets/app.js","assets/router-catalog.json","assets/router-setup-preview.png","assets/icons/router-logo.png","assets/icons/router-icon-192.png","assets/icons/router-icon-512.png","assets/icons/router-icon-maskable-512.png","assets/icons/apple-touch-icon.png","assets/icons/favicon.ico","robots.txt","sitemap.xml","llms.txt","src/index.js"]
           for item in required:
               p=Path(item); assert p.exists() and p.stat().st_size>0, f"missing/empty brand asset: {item}"
           assert not Path("assets/fonts/lora").exists()
@@ -39,6 +39,11 @@ jobs:
               assert legacy not in lowered, f"legacy brand token remains: {legacy}"
           manifest=json.loads(Path("manifest.json").read_text(encoding="utf-8"))
           assert manifest.get("theme_color","").lower()=="#2563eb"
+          assert manifest.get("name")=="SautiLink Router"
+          manifest_icons=manifest.get("icons",[])
+          assert len(manifest_icons)>=3
+          assert all(icon.get("src","").startswith("/assets/icons/") for icon in manifest_icons)
+          assert any(icon.get("purpose")=="maskable" for icon in manifest_icons)
           catalog=json.loads(Path("assets/router-catalog.json").read_text(encoding="utf-8"))
           assert len(catalog.get("countryCodes",[])) >= 249
           assert len(catalog.get("providers",[])) >= 250
@@ -48,6 +53,6 @@ jobs:
           robots=Path("robots.txt").read_text(encoding="utf-8")
           assert "OAI-SearchBot" in robots and "Sitemap:" in robots
           sw=Path("sw.js").read_text(encoding="utf-8")
-          assert "sautilink-router-v4" in sw
-          for item in ["/assets/brand/system.css","/assets/app.css","/assets/app.js","/assets/router-catalog.json","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
+          assert "sautilink-router-v5" in sw
+          for item in ["/assets/brand/system.css","/assets/app.css","/assets/app.js","/assets/router-catalog.json","/assets/icons/router-logo.png","/assets/icons/router-icon-192.png","/assets/icons/router-icon-512.png","/assets/icons/router-icon-maskable-512.png","/assets/icons/apple-touch-icon.png","/assets/icons/favicon.ico","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
               assert item in sw, f"PWA cache missing {item}"

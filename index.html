@@ -8,6 +8,9 @@
   <meta name="keywords" content="router login, Wi-Fi setup, router admin, default gateway, 192.168.1.1, 192.168.0.1, router setup gateway, modem login" />
   <meta name="author" content="SautiLink Corporation" />
   <meta name="application-name" content="SautiLink Router" />
+  <meta name="apple-mobile-web-app-title" content="SautiLink Router" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="/assets/icons/router-icon-192.png" />
   <meta name="theme-color" content="#2563eb" />
   <meta name="color-scheme" content="light dark" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -19,19 +22,23 @@
   <meta property="og:title" content="Find the right way into your Wi-Fi settings" />
   <meta property="og:description" content="A private, guided router setup gateway for providers and router brands around the world." />
   <meta property="og:url" content="https://router.sautilink.com/" />
-  <meta property="og:image" content="https://router.sautilink.com/assets/router-setup-preview.png" />
+  <meta property="og:image" content="https://router.sautilink.com/assets/router-setup-preview.png?v=2" />
+  <meta property="og:image:secure_url" content="https://router.sautilink.com/assets/router-setup-preview.png?v=2" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="SautiLink Router setup gateway preview" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SautiLink Router Setup Gateway" />
   <meta name="twitter:description" content="Find the right router login, setup page, or official app in a few guided steps." />
-  <meta name="twitter:image" content="https://router.sautilink.com/assets/router-setup-preview.png" />
+  <meta name="twitter:image" content="https://router.sautilink.com/assets/router-setup-preview.png?v=2" />
+  <meta name="twitter:image:alt" content="SautiLink Router setup gateway preview" />
 
-  <link rel="icon" href="https://sautilink.com/assets/favicon.png" />
-  <link rel="apple-touch-icon" href="https://sautilink.com/logo.png" />
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="preconnect" href="https://sautilink.com" />
+  <link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json?v=2" />
   <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/assets/brand/system.css" />
   <link rel="stylesheet" href="/assets/app.css" />
@@ -54,7 +61,12 @@
         "@id": "https://sautilink.com/#organization",
         "name": "SautiLink Corporation",
         "url": "https://sautilink.com/",
-        "logo": "https://sautilink.com/logo.png"
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://router.sautilink.com/assets/icons/router-logo.png",
+          "width": 512,
+          "height": 512
+        }
       },
       {
         "@type": "WebApplication",
@@ -65,6 +77,8 @@
         "operatingSystem": "Any",
         "browserRequirements": "Requires JavaScript and a modern web browser",
         "isAccessibleForFree": true,
+        "image": "https://router.sautilink.com/assets/router-setup-preview.png",
+        "thumbnailUrl": "https://router.sautilink.com/assets/icons/router-logo.png",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
         "description": "Recommends a router setup route from the user's confirmed region, provider, router brand, and browser connection hints."
       },
@@ -98,7 +112,7 @@
   <header class="site-header" data-site-header>
     <div class="shell header-inner">
       <a class="brand" href="/" aria-label="SautiLink Router home">
-        <img src="https://sautilink.com/logo.png" alt="SautiLink" width="38" height="38" />
+        <img src="/assets/icons/router-logo.png" alt="SautiLink Router" width="40" height="40" />
         <span class="brand-copy"><strong>SautiLink</strong><span>Router</span></span>
       </a>
 
@@ -290,7 +304,7 @@
 
   <footer class="site-footer">
     <div class="shell footer-main">
-      <div class="footer-brand"><a class="brand" href="/"><img src="https://sautilink.com/logo.png" alt="" width="36" height="36" /><span class="brand-copy"><strong>SautiLink</strong><span>Router</span></span></a><p>A private, guided gateway to router settings around the world.</p></div>
+      <div class="footer-brand"><a class="brand" href="/"><img src="/assets/icons/router-logo.png" alt="" width="38" height="38" /><span class="brand-copy"><strong>SautiLink</strong><span>Router</span></span></a><p>A private, guided gateway to router settings around the world.</p></div>
       <div class="footer-links">
         <div><strong>Router</strong><a href="#setup">Setup assistant</a><a href="#directory">Global directory</a><a href="#guides">Login guide</a></div>
         <div><strong>SautiLink</strong><a href="https://sautilink.com/about">About</a><a href="https://sautilink.com/help">Help</a><a href="https://sautilink.com/contact">Contact</a></div>

@@ -59,7 +59,7 @@ svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: 
 .site-header.is-scrolled { border-color: var(--line); box-shadow: var(--shadow-sm); }
 .header-inner { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-width: max-content; }
-.brand img { width: 38px; height: 38px; object-fit: contain; }
+.brand img { width: 40px; height: 40px; object-fit: contain; }
 .brand-copy { display: flex; align-items: baseline; gap: 6px; letter-spacing: -.02em; }
 .brand-copy strong { font-size: 1.05rem; font-weight: 800; }
 .brand-copy span { color: var(--text-soft); font-size: .88rem; font-weight: 650; }
