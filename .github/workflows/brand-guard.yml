@@ -16,12 +16,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Verify Inter-only brand system and PWA cache
+      - name: Verify brand system, router catalog, SEO and PWA cache
         shell: python
         run: |
           from pathlib import Path
           import json
-          required=["assets/fonts/inter/InterVariable.woff2","assets/fonts/inter/InterVariable-Italic.woff2","assets/fonts/inter/OFL.txt","assets/brand/system.css"]
+          required=["assets/fonts/inter/InterVariable.woff2","assets/fonts/inter/InterVariable-Italic.woff2","assets/fonts/inter/OFL.txt","assets/brand/system.css","assets/app.css","assets/app.js","assets/router-catalog.json","assets/router-setup-preview.png","robots.txt","sitemap.xml","llms.txt","src/index.js"]
           for item in required:
               p=Path(item); assert p.exists() and p.stat().st_size>0, f"missing/empty brand asset: {item}"
           assert not Path("assets/fonts/lora").exists()
@@ -39,7 +39,15 @@ jobs:
               assert legacy not in lowered, f"legacy brand token remains: {legacy}"
           manifest=json.loads(Path("manifest.json").read_text(encoding="utf-8"))
           assert manifest.get("theme_color","").lower()=="#2563eb"
+          catalog=json.loads(Path("assets/router-catalog.json").read_text(encoding="utf-8"))
+          assert len(catalog.get("countryCodes",[])) >= 249
+          assert len(catalog.get("providers",[])) >= 250
+          assert len(catalog.get("brands",[])) >= 50
+          assert len(catalog.get("gateways",[])) >= 20
+          assert "https://router.sautilink.com/" in Path("sitemap.xml").read_text(encoding="utf-8")
+          robots=Path("robots.txt").read_text(encoding="utf-8")
+          assert "OAI-SearchBot" in robots and "Sitemap:" in robots
           sw=Path("sw.js").read_text(encoding="utf-8")
-          assert "sautilink-router-v3" in sw
-          for item in ["/assets/brand/system.css","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
+          assert "sautilink-router-v4" in sw
+          for item in ["/assets/brand/system.css","/assets/app.css","/assets/app.js","/assets/router-catalog.json","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
               assert item in sw, f"PWA cache missing {item}"

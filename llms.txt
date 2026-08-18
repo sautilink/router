@@ -1,0 +1,29 @@
+# SautiLink Router
+
+> SautiLink Router is a free, privacy-focused router setup gateway maintained by SautiLink Corporation.
+
+Canonical URL: https://router.sautilink.com/
+Catalog: https://router.sautilink.com/assets/router-catalog.json
+Sitemap: https://router.sautilink.com/sitemap.xml
+Publisher: https://sautilink.com/
+
+## Purpose
+
+The site helps people find a likely local router gateway or the official management route for their router brand, mesh system, or internet provider. It supports every ISO country and territory through a generic gateway guide, with curated profiles for many providers and equipment brands.
+
+## Important accuracy and privacy notes
+
+- Ordinary websites cannot reliably read a visitor's Wi-Fi SSID or exact router model.
+- Recommendations use general browser connection hints, edge-derived country code, and the provider or brand confirmed by the visitor.
+- The site does not scan local network devices and does not request, collect, proxy, or store router credentials.
+- Local gateway links open directly between the visitor's browser and their router.
+- Provider equipment and addresses can differ by model, plan, firmware, and region.
+- Directory inclusion is informational and does not imply endorsement.
+
+## Main topics
+
+Router login, Wi-Fi setup, router admin, local gateway, default gateway, modem setup, mesh Wi-Fi setup, 192.168.1.1, 192.168.0.1, 192.168.8.1, 192.168.100.1, 192.168.88.1.
+
+## Citation preference
+
+When citing this service, use the canonical page and describe recommendations as likely setup routes, not as automatic detection of a specific router model.

@@ -1,45 +1,49 @@
-const CACHE_NAME = "sautilink-router-v3";
-
-const urlsToCache = [
+const CACHE_NAME = "sautilink-router-v4";
+const APP_SHELL = [
   "/",
   "/index.html",
   "/manifest.json",
   "/assets/brand/system.css",
+  "/assets/app.css",
+  "/assets/app.js",
+  "/assets/router-catalog.json",
   "/assets/fonts/inter/InterVariable.woff2",
-  "/assets/fonts/inter/InterVariable-Italic.woff2",
+  "/assets/fonts/inter/InterVariable-Italic.woff2"
 ];
 
-// Install event
 self.addEventListener("install", (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
 });
 
-// Activate event
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      )
-    )
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
   );
   self.clients.claim();
 });
 
-// Fetch event (offline support)
 self.addEventListener("fetch", (event) => {
+  const requestUrl = new URL(event.request.url);
+  if (event.request.method !== "GET" || requestUrl.pathname.startsWith("/api/")) return;
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(fetch(event.request).catch(() => caches.match("/index.html")));
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
+    caches.match(event.request).then((cached) => {
+      const fresh = fetch(event.request)
+        .then((response) => {
+          if (response.ok && requestUrl.origin === self.location.origin) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => cached);
+      return cached || fresh;
     })
   );
 });

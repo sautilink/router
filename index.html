@@ -1,293 +1,307 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Router Setup Gateway — SautiLink</title>
-
-  <meta name="description" content="Quick access to router admin pages with SautiLink Router Gateway." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Router Login & Wi-Fi Setup Gateway | SautiLink Router</title>
+  <meta name="description" content="Find the right router login, Wi-Fi setup page, or official app for your device, internet provider, and router brand. Free, private, and guided by SautiLink." />
+  <meta name="keywords" content="router login, Wi-Fi setup, router admin, default gateway, 192.168.1.1, 192.168.0.1, router setup gateway, modem login" />
+  <meta name="author" content="SautiLink Corporation" />
+  <meta name="application-name" content="SautiLink Router" />
   <meta name="theme-color" content="#2563eb" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://router.sautilink.com/" />
+  <link rel="alternate" type="application/json" title="SautiLink Router catalog" href="/assets/router-catalog.json" />
 
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SautiLink Router" />
+  <meta property="og:title" content="Find the right way into your Wi-Fi settings" />
+  <meta property="og:description" content="A private, guided router setup gateway for providers and router brands around the world." />
+  <meta property="og:url" content="https://router.sautilink.com/" />
+  <meta property="og:image" content="https://router.sautilink.com/assets/router-setup-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="SautiLink Router setup gateway preview" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SautiLink Router Setup Gateway" />
+  <meta name="twitter:description" content="Find the right router login, setup page, or official app in a few guided steps." />
+  <meta name="twitter:image" content="https://router.sautilink.com/assets/router-setup-preview.png" />
 
-  <link rel="manifest" href="/manifest.json">
-
-  <style>
-    :root{
-      --bg:#070b18;
-      --card:#0f172a;
-      --text:#f8fafc;
-      --muted:#94a3b8;
-      --border:rgba(255,255,255,0.08);
-      --primary:#2563eb;
-      --shadow:0 12px 30px rgba(0,0,0,0.4);
-    }
-
-    body.light{
-      --bg:#f6f7fb;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --border:rgba(15,23,42,0.08);
-      --primary:#2563eb;
-      --shadow:0 12px 30px rgba(0,0,0,0.08);
-    }
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:var(--font-primary);
-    }
-
-    body{
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .container{
-      max-width:1100px;
-      margin:auto;
-      padding:24px;
-    }
-
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:40px;
-    }
-
-    .logo{
-      font-size:1.6rem;
-      font-weight:800;
-    }
-
-    .logo span{
-      color:var(--primary);
-    }
-
-    .btn-small{
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--card);
-      color:var(--text);
-      cursor:pointer;
-    }
-
-    .hero{
-      text-align:center;
-      margin-bottom:25px;
-    }
-
-    .hero h1{
-      font-size:clamp(2.2rem,6vw,4rem);
-      letter-spacing:-2px;
-    }
-
-    .hero p{
-      color:var(--muted);
-    }
-
-    .notice{
-      margin-top:10px;
-      display:inline-block;
-      padding:12px 16px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--card);
-      color:var(--muted);
-    }
-
-    .search{
-      max-width:500px;
-      margin:25px auto;
-    }
-
-    .search input{
-      width:100%;
-      padding:14px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--card);
-      color:var(--text);
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:16px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:20px;
-      box-shadow:var(--shadow);
-      text-decoration:none;
-      color:var(--text);
-      transition:.2s;
-    }
-
-    .card:hover{
-      transform:translateY(-3px);
-    }
-
-    .btn{
-      display:block;
-      text-align:center;
-      padding:12px;
-      border-radius:12px;
-      background:var(--primary);
-      color:#fff;
-      font-weight:700;
-      text-decoration:none;
-      margin-top:10px;
-    }
-
-    footer{
-      margin-top:auto;
-      padding:40px;
-      text-align:center;
-    }
-
-    .footer-links{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:12px;
-      margin-bottom:10px;
-    }
-
-    .footer-links a{
-      color:var(--muted);
-      text-decoration:none;
-    }
-
-    .copyright{
-      color:var(--muted);
-      font-size:.9rem;
-    }
-  </style>
+  <link rel="icon" href="https://sautilink.com/assets/favicon.png" />
+  <link rel="apple-touch-icon" href="https://sautilink.com/logo.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preconnect" href="https://sautilink.com" />
   <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/assets/brand/system.css" />
+  <link rel="stylesheet" href="/assets/app.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://router.sautilink.com/#website",
+        "url": "https://router.sautilink.com/",
+        "name": "SautiLink Router",
+        "description": "A private, guided router login and Wi-Fi setup gateway.",
+        "publisher": { "@id": "https://sautilink.com/#organization" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://sautilink.com/#organization",
+        "name": "SautiLink Corporation",
+        "url": "https://sautilink.com/",
+        "logo": "https://sautilink.com/logo.png"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://router.sautilink.com/#application",
+        "name": "SautiLink Router Setup Gateway",
+        "url": "https://router.sautilink.com/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern web browser",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Recommends a router setup route from the user's confirmed region, provider, router brand, and browser connection hints."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can this page detect my exact router model?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. Modern browsers do not expose a router's exact model or Wi-Fi network name to ordinary websites. SautiLink uses only general device and connection hints, then asks you to confirm your provider or router brand." }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does a router login page fail to open?",
+            "acceptedAnswer": { "@type": "Answer", "text": "You normally need to be connected to that router's Wi-Fi or local network. Some mesh routers are managed only in their official mobile app, and some networks use a different default gateway." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does SautiLink collect my router password?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. SautiLink Router does not ask for, receive, or store router usernames and passwords. Local gateway links open directly between your browser and your router." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
-
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-<div class="container">
+  <header class="site-header" data-site-header>
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="SautiLink Router home">
+        <img src="https://sautilink.com/logo.png" alt="SautiLink" width="38" height="38" />
+        <span class="brand-copy"><strong>SautiLink</strong><span>Router</span></span>
+      </a>
 
-<header>
-  <div class="logo">Sauti<span>Link</span> Router</div>
-  <button class="btn-small" onclick="toggleTheme()">Theme</button>
-</header>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="#setup">Setup</a>
+        <a href="#directory">Directory</a>
+        <a href="#guides">Guides</a>
+        <a href="#safety">Safety</a>
+      </nav>
 
-<section class="hero">
-  <h1>Router Setup Gateway</h1>
-  <p>Open router admin pages instantly.</p>
-  <div class="notice">Make sure you're connected to WiFi router.</div>
-</section>
+      <div class="header-actions">
+        <a class="product-link" href="https://sautilink.com" target="_blank" rel="noopener noreferrer">SautiLink products</a>
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Switch color theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3V1m0 22v-2M4.22 4.22 2.8 2.8m18.4 18.4-1.42-1.42M3 12H1m22 0h-2M4.22 19.78 2.8 21.2M21.2 2.8l-1.42 1.42M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.4A8.5 8.5 0 0 1 8.6 3.4a8.5 8.5 0 1 0 12 12Z"/></svg>
+        </button>
+        <button class="menu-button" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-nav">
+          <span></span><span></span><span></span><span class="sr-only">Open menu</span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
+      <a href="#setup">Setup</a>
+      <a href="#directory">Directory</a>
+      <a href="#guides">Guides</a>
+      <a href="#safety">Safety</a>
+      <a href="https://sautilink.com">SautiLink products</a>
+    </nav>
+  </header>
 
-<section class="search">
-  <input type="text" placeholder="Search router IP..." onkeyup="filterCards(this.value)">
-</section>
+  <main id="main-content">
+    <section class="hero-section" id="setup">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span>Private setup assistant</div>
+          <h1>Find the right way into your <span>Wi-Fi settings.</span></h1>
+          <p class="hero-lead">Tell us your region, internet provider, or router brand. We will recommend the most likely local gateway or official setup app—without scanning your private network.</p>
 
-<section class="grid">
+          <div class="context-grid" aria-label="Current device context">
+            <article class="context-card">
+              <span class="context-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></span>
+              <span><small>Device</small><strong id="device-value">Checking…</strong></span>
+            </article>
+            <article class="context-card">
+              <span class="context-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.5 16.05a6 6 0 0 1 7 0M12 20h.01M1.42 9a16 16 0 0 1 21.16 0"/></svg></span>
+              <span><small>Connection</small><strong id="connection-value">Checking…</strong></span>
+            </article>
+            <article class="context-card">
+              <span class="context-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span>
+              <span><small>Region</small><strong id="region-value">Checking…</strong></span>
+            </article>
+          </div>
 
-  <div class="card" data-name="192.168.1.1">
-    <h3>192.168.1.1</h3>
-    <a class="btn" href="http://192.168.1.1" target="_blank">OPEN</a>
-  </div>
+          <div class="privacy-line"><span>No installation</span><span>No password collection</span><span>No network scan</span></div>
+        </div>
 
-  <div class="card" data-name="192.168.0.1">
-    <h3>192.168.0.1</h3>
-    <a class="btn" href="http://192.168.0.1" target="_blank">OPEN</a>
-  </div>
+        <section class="setup-card" aria-labelledby="assistant-title">
+          <div class="setup-card-head">
+            <div><span class="step-label">Guided setup</span><h2 id="assistant-title">Choose your network</h2></div>
+            <span class="step-count" id="step-count">1 of 3</span>
+          </div>
+          <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+          <div class="notice notice-neutral" id="connection-notice" role="status">
+            <span class="notice-mark" aria-hidden="true"></span>
+            <p><strong>Checking your connection</strong><span>We only read signals your browser chooses to share.</span></p>
+          </div>
+          <div class="field-group">
+            <label for="country-select">Country or territory</label>
+            <div class="select-wrap">
+              <select id="country-select"><option value="">Select your country</option></select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="setup-search">Internet provider or router brand</label>
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input id="setup-search" type="search" autocomplete="off" placeholder="e.g. Safaricom, TP-Link, MikroTik" aria-controls="setup-suggestions" aria-expanded="false" />
+              <button type="button" id="clear-setup-search" aria-label="Clear search" hidden>&times;</button>
+            </div>
+            <div class="suggestions" id="setup-suggestions" role="listbox" hidden></div>
+            <p class="field-hint" id="setup-hint">Select a country to see regional providers, or search any router brand.</p>
+          </div>
+          <div class="quick-picks" id="quick-picks" aria-live="polite"></div>
+          <div class="recommendation" id="recommendation" hidden>
+            <div class="recommendation-head"><span class="match-badge" id="match-badge">Best match</span><button type="button" class="text-button" id="change-selection">Change</button></div>
+            <h3 id="recommendation-title">Recommended setup route</h3>
+            <p id="recommendation-copy"></p>
+            <a class="primary-action" id="primary-route" href="#" target="_blank" rel="noopener noreferrer"><span id="primary-route-label">Open gateway</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+            <div class="alternative-routes" id="alternative-routes"></div>
+            <p class="local-route-note" id="local-route-note">Local gateway links open directly on your own network. SautiLink never receives your router login.</p>
+          </div>
+          <p class="setup-disclaimer">Equipment supplied by a provider can vary. Confirm the label on your router if the first route does not work.</p>
+        </section>
+      </div>
+    </section>
 
-  <div class="card" data-name="10.0.0.1">
-    <h3>10.0.0.1</h3>
-    <a class="btn" href="http://10.0.0.1" target="_blank">OPEN</a>
-  </div>
+    <section class="section directory-section" id="directory">
+      <div class="shell">
+        <div class="section-heading split-heading">
+          <div><span class="section-kicker">Global directory</span><h2>One place for routers and providers</h2><p>Browse a curated catalog of established internet providers, router manufacturers, mesh systems, and common gateways. Every country remains supported through generic gateway guidance.</p></div>
+          <div class="catalog-stat"><strong id="catalog-count">150+</strong><span>setup profiles</span></div>
+        </div>
+        <div class="directory-panel">
+          <div class="directory-toolbar">
+            <div class="tab-list" role="tablist" aria-label="Directory type">
+              <button type="button" class="tab-button is-active" role="tab" aria-selected="true" data-directory-tab="providers">Providers</button>
+              <button type="button" class="tab-button" role="tab" aria-selected="false" data-directory-tab="brands">Router brands</button>
+              <button type="button" class="tab-button" role="tab" aria-selected="false" data-directory-tab="gateways">Gateways</button>
+            </div>
+            <div class="directory-search search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input id="directory-search" type="search" placeholder="Search the directory" aria-label="Search the directory" />
+            </div>
+            <div class="select-wrap country-filter-wrap">
+              <select id="directory-country" aria-label="Filter providers by country"><option value="">All countries</option></select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+            </div>
+          </div>
+          <div class="directory-summary" id="directory-summary" aria-live="polite">Loading the global catalog…</div>
+          <div class="directory-grid" id="directory-grid"></div>
+          <div class="empty-state" id="directory-empty" hidden><h3>No exact profile found</h3><p>Your network can still use the common gateway guide below. Try the router brand printed on the device label.</p></div>
+          <button type="button" class="secondary-action show-more" id="show-more" hidden>Show more</button>
+        </div>
+        <p class="directory-note">Directory inclusion is informational, not an endorsement. Provider equipment and gateway addresses may change by plan, model, or region.</p>
+      </div>
+    </section>
 
-  <div class="card" data-name="192.168.100.1">
-    <h3>192.168.100.1</h3>
-    <a class="btn" href="http://192.168.100.1" target="_blank">OPEN</a>
-  </div>
+    <section class="section gateways-section" aria-labelledby="gateway-heading">
+      <div class="shell">
+        <div class="section-heading compact-heading"><span class="section-kicker">Quick access</span><h2 id="gateway-heading">Common local gateways</h2><p>Connect to your router's Wi-Fi first, then open one of the addresses below.</p></div>
+        <div class="gateway-grid">
+          <a class="gateway-card" href="http://192.168.1.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>192.168.1.1</strong><small>Most common</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+          <a class="gateway-card" href="http://192.168.0.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>192.168.0.1</strong><small>Home routers</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+          <a class="gateway-card" href="http://192.168.8.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>192.168.8.1</strong><small>Mobile routers</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+          <a class="gateway-card" href="http://192.168.100.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>192.168.100.1</strong><small>Fiber and cable</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+          <a class="gateway-card" href="http://192.168.88.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>192.168.88.1</strong><small>MikroTik default</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+          <a class="gateway-card" href="http://10.0.0.1" target="_blank" rel="noopener noreferrer"><span class="gateway-status"></span><strong>10.0.0.1</strong><small>Alternative LAN</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+        </div>
+      </div>
+    </section>
 
-</section>
+    <section class="section guide-section" id="guides">
+      <div class="shell guide-grid">
+        <div class="guide-copy">
+          <span class="section-kicker">Router login guide</span><h2>From connected to configured.</h2><p>Router settings live inside your local network. Follow these steps before changing the Wi-Fi name, password, parental controls, or security mode.</p>
+          <ol class="step-list">
+            <li><span>01</span><div><strong>Join the router's network</strong><p>Use Wi-Fi or an Ethernet cable. Mobile data alone cannot reach most local router pages.</p></div></li>
+            <li><span>02</span><div><strong>Open the recommended route</strong><p>Try the primary gateway, then an alternative. Mesh systems may send you to an official app.</p></div></li>
+            <li><span>03</span><div><strong>Use the router's own credentials</strong><p>Look at the device label or credentials set by the owner. Never enter them on an unrelated website.</p></div></li>
+          </ol>
+        </div>
+        <aside class="device-guide-card">
+          <div class="device-guide-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></div>
+          <span class="step-label">For your device</span><h3 id="device-guide-title">Find your gateway address</h3><p id="device-guide-copy">Your operating system can show the exact gateway used by the network.</p>
+          <ol id="device-guide-steps"><li>Open your network settings.</li><li>Select the connected Wi-Fi network.</li><li>Look for Router, Gateway, or Default gateway.</li></ol>
+          <button type="button" class="copy-guide" id="copy-guide">Copy these steps</button>
+        </aside>
+      </div>
+    </section>
 
-<!-- BRANDS FIXED -->
-<section style="margin-top:60px;">
+    <section class="section safety-section" id="safety">
+      <div class="shell"><div class="safety-card">
+        <div class="safety-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 2.8 8.2 7 10 4.2-1.8 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <div><span class="section-kicker">Designed for privacy</span><h2>Your router password stays with your router.</h2><p>SautiLink Router does not probe your local devices, ask for admin credentials, or proxy the router login. A gateway button simply opens a local address in your browser.</p></div>
+        <a class="secondary-action" href="https://sautilink.com/privacy" target="_blank" rel="noopener noreferrer">Read privacy policy</a>
+      </div></div>
+    </section>
 
-  <h2 style="text-align:center; color:var(--primary); margin-bottom:15px;">
-    BRANDS
-  </h2>
+    <section class="section faq-section" aria-labelledby="faq-heading">
+      <div class="shell faq-grid">
+        <div class="section-heading"><span class="section-kicker">Clear answers</span><h2 id="faq-heading">Router setup questions</h2><p>Practical guidance for common local network problems.</p></div>
+        <div class="faq-list">
+          <details><summary>Can this page detect my exact router model?<span></span></summary><p>No. An ordinary website cannot read your Wi-Fi name or exact router model. We use general browser hints and your confirmed provider or brand to make a transparent recommendation.</p></details>
+          <details><summary>Why does the router page fail to open?<span></span></summary><p>Check that you are connected to the router's Wi-Fi, turn off mobile data or VPN temporarily, and try another listed gateway. Some mesh systems work only through their official app.</p></details>
+          <details><summary>Is a “not secure” message normal on a local gateway?<span></span></summary><p>Many routers use a local HTTP page or a self-signed certificate. Confirm that the address is a local gateway and never continue if the page sends you to an unfamiliar public domain.</p></details>
+          <details><summary>Does SautiLink know my router password?<span></span></summary><p>No. Local gateway pages communicate directly with the router on your network. SautiLink does not request or receive the credentials you enter there.</p></details>
+        </div>
+      </div>
+    </section>
 
-  <div class="grid">
+    <section class="product-cta-section"><div class="shell"><div class="product-cta">
+      <div><span class="section-kicker">More from SautiLink</span><h2>Build, connect, and move faster online.</h2><p>Discover free and practical tools across the SautiLink product ecosystem.</p></div>
+      <a class="primary-action compact-action" href="https://sautilink.com" target="_blank" rel="noopener noreferrer">Explore SautiLink<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+    </div></div></section>
+  </main>
 
-    <a class="card" href="http://192.168.0.1" target="_blank">
-      <h3>TP-Link</h3>
-      <p style="color:var(--muted)">Open router admin</p>
-    </a>
+  <footer class="site-footer">
+    <div class="shell footer-main">
+      <div class="footer-brand"><a class="brand" href="/"><img src="https://sautilink.com/logo.png" alt="" width="36" height="36" /><span class="brand-copy"><strong>SautiLink</strong><span>Router</span></span></a><p>A private, guided gateway to router settings around the world.</p></div>
+      <div class="footer-links">
+        <div><strong>Router</strong><a href="#setup">Setup assistant</a><a href="#directory">Global directory</a><a href="#guides">Login guide</a></div>
+        <div><strong>SautiLink</strong><a href="https://sautilink.com/about">About</a><a href="https://sautilink.com/help">Help</a><a href="https://sautilink.com/contact">Contact</a></div>
+        <div><strong>Legal</strong><a href="https://sautilink.com/privacy">Privacy</a><a href="https://sautilink.com/terms">Terms</a></div>
+      </div>
+    </div>
+    <div class="shell footer-bottom"><p>&copy; 2026 SautiLink Corporation. All rights reserved.</p><p>Router names and trademarks belong to their respective owners.</p></div>
+  </footer>
 
-    <a class="card" href="http://192.168.1.1" target="_blank">
-      <h3>Huawei</h3>
-      <p style="color:var(--muted)">Open router admin</p>
-    </a>
-
-    <a class="card" href="http://192.168.88.1" target="_blank">
-      <h3>MikroTik</h3>
-      <p style="color:var(--muted)">Open router admin</p>
-    </a>
-
-    <a class="card" href="http://192.168.1.1" target="_blank">
-      <h3>ZTE</h3>
-      <p style="color:var(--muted)">Open router admin</p>
-    </a>
-
-  </div>
-
-</section>
-
-</div>
-
-<footer>
-
-  <div class="footer-links">
-    <a href="https://www.sautilink.com">Home</a>
-    <a href="https://sautilink.com/privacy">Privacy</a>
-    <a href="https://sautilink.com/terms">Terms</a>
-    <a href="https://sautilink.com/faq">FAQ</a>
-    <a href="https://sautilink.com/contact">Contact</a>
-    <a href="https://sautilink.com/help">Help</a>
-  </div>
-
-  <div class="copyright">
-    © 2026 - SautiLink Corporation. All rights reserved.
-  </div>
-
-</footer>
-
-<script>
-
-function toggleTheme(){
-  document.body.classList.toggle("light");
-}
-
-function filterCards(value){
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = c.innerText.toLowerCase().includes(value.toLowerCase())
-      ? "block"
-      : "none";
-  });
-}
-
-</script>
-
+  <noscript><div class="noscript-message">JavaScript is required for personalized recommendations. You can still open the common gateway links above.</div></noscript>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="/assets/app.js" defer></script>
 </body>
 </html>
