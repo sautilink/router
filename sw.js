@@ -1,4 +1,4 @@
-const CACHE_NAME = "sautilink-router-v6";
+const CACHE_NAME = "sautilink-router-v5";
 const APP_SHELL = [
   "/",
   "/index.html",
