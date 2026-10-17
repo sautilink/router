@@ -1,13 +1,17 @@
-const CACHE_NAME = "sautilink-router-v5";
+const CACHE_NAME = "sautilink-router-v5-ios-20261017";
 const APP_SHELL = [
   "/",
   "/index.html",
   "/manifest.json",
+  "/manifest.json?v=20261017-1",
   "/assets/brand/system.css",
-  "/assets/launch-splash.css",
-  "/assets/launch-splash.js",
   "/assets/app.css",
+  "/assets/app.css?v=20261017-1",
   "/assets/app.js",
+  "/assets/app.js?v=20261017-1",
+  "/assets/router-theme.js?v=20261017-1",
+  "/assets/router-setup-hero.webp",
+  "/assets/router-setup-hero-768.webp",
   "/assets/router-catalog.json",
   "/assets/icons/router-logo.png",
   "/assets/icons/router-icon-192.png",

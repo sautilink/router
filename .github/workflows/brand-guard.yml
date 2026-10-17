@@ -56,3 +56,8 @@ jobs:
           assert "sautilink-router-v5" in sw
           for item in ["/assets/brand/system.css","/assets/app.css","/assets/app.js","/assets/router-catalog.json","/assets/icons/router-logo.png","/assets/icons/router-icon-192.png","/assets/icons/router-icon-512.png","/assets/icons/router-icon-maskable-512.png","/assets/icons/apple-touch-icon.png","/assets/icons/favicon.ico","/assets/fonts/inter/InterVariable.woff2","/assets/fonts/inter/InterVariable-Italic.woff2"]:
               assert item in sw, f"PWA cache missing {item}"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify router interface behaviors
+        run: node --test tests/*.test.mjs

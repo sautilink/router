@@ -18,11 +18,20 @@ Recommendations are presented as likely routes, never as confirmed hardware dete
 - `index.html` — semantic page content and structured data
 - `assets/app.css` — responsive SautiLink UI
 - `assets/app.js` — device hints, search, filtering, and recommendations
+- `assets/router-theme.js` — saved theme selection before the page renders
 - `assets/router-catalog.json` — countries, providers, router brands, and gateways
+- `assets/router-setup-hero*.webp` — responsive decorative router illustration
 - `assets/icons/` — official Router logo derivatives for web, Windows, Android, Apple, and favicons
 - `src/index.js` — Cloudflare Worker context API and security headers
 - `robots.txt`, `sitemap.xml`, `llms.txt` — crawler and machine-discovery resources
 - `sw.js`, `manifest.json` — PWA and offline shell
+- `tests/router-ui.test.mjs` — interface behavior checks, also run by CI
+
+## Interface
+
+The public interface uses Inter, the official Router logo, light neutral surfaces and a saved light or dark theme choice. Keep the setup assistant prominent, controls readable on phones, and search usable with a keyboard. Catalog controls should show an honest loading or unavailable state until their data is ready.
+
+Styles and scripts are external to respect the existing content security policy. When replacing a cached interface asset, update its versioned page reference and service-worker cache entry together.
 
 ## Updating the catalog
 
@@ -37,6 +46,8 @@ Validate before deployment:
 ```sh
 jq -e . assets/router-catalog.json
 node --check assets/app.js
+node --check assets/router-theme.js
+node --test tests/router-ui.test.mjs
 node --input-type=module --check < src/index.js
 git diff --check
 ```
