@@ -6,11 +6,14 @@
   const state = {
     catalog: null,
     country: "",
+    countryConfirmed: false,
     selection: null,
     directoryTab: "providers",
     directoryLimit: DIRECTORY_PAGE_SIZE,
     device: null,
-    connectionType: "unknown"
+    connectionType: "unknown",
+    suggestionItems: [],
+    activeSuggestion: -1
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -37,6 +40,7 @@
     localRouteNote: $("#local-route-note"),
     stepCount: $("#step-count"),
     progressBar: $("#progress-bar"),
+    progress: $("#setup-progress"),
     deviceValue: $("#device-value"),
     connectionValue: $("#connection-value"),
     regionValue: $("#region-value"),
@@ -45,6 +49,7 @@
     directorySearch: $("#directory-search"),
     directoryGrid: $("#directory-grid"),
     directorySummary: $("#directory-summary"),
+    directoryResults: $("#directory-results"),
     directoryEmpty: $("#directory-empty"),
     showMore: $("#show-more"),
     deviceGuideTitle: $("#device-guide-title"),
@@ -103,15 +108,19 @@
 
   function applyTheme(theme) {
     document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "dark" ? "#070b14" : "#2563eb");
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", theme === "dark" ? "#0b0b0e" : "#ffffff");
+    const toggle = $("[data-theme-toggle]");
+    toggle.setAttribute("aria-label", theme === "dark" ? "Use light theme" : "Use dark theme");
+    toggle.setAttribute("aria-pressed", String(theme === "dark"));
   }
 
   function initTheme() {
     let saved = null;
     try { saved = localStorage.getItem("sautilink-router-theme"); } catch (_) { /* storage can be unavailable */ }
-    const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    applyTheme(saved || preferred);
-    $("[data-theme-toggle]").addEventListener("click", () => {
+    applyTheme(saved === "dark" ? "dark" : "light");
+    const toggle = $("[data-theme-toggle]");
+    toggle.hidden = false;
+    toggle.addEventListener("click", () => {
       const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
       applyTheme(next);
       try { localStorage.setItem("sautilink-router-theme", next); } catch (_) { /* ignore */ }
@@ -119,19 +128,42 @@
   }
 
   function initNavigation() {
-    const updateHeader = () => elements.header.classList.toggle("is-scrolled", window.scrollY > 8);
-    updateHeader();
-    window.addEventListener("scroll", updateHeader, { passive: true });
-
-    elements.menuToggle.addEventListener("click", () => {
-      const willOpen = elements.mobileNav.hidden;
-      elements.mobileNav.hidden = !willOpen;
-      elements.menuToggle.setAttribute("aria-expanded", String(willOpen));
-    });
-    $$("a", elements.mobileNav).forEach((link) => link.addEventListener("click", () => {
+    const closeMenu = (returnFocus = false) => {
+      if (elements.mobileNav.hidden) return;
       elements.mobileNav.hidden = true;
       elements.menuToggle.setAttribute("aria-expanded", "false");
-    }));
+      elements.menuToggle.setAttribute("aria-label", "Open navigation");
+      if (returnFocus) elements.menuToggle.focus();
+    };
+    elements.menuToggle.hidden = false;
+    elements.menuToggle.addEventListener("click", () => {
+      if (!elements.mobileNav.hidden) return closeMenu();
+      elements.mobileNav.hidden = false;
+      elements.menuToggle.setAttribute("aria-expanded", "true");
+      elements.menuToggle.setAttribute("aria-label", "Close navigation");
+      $("a", elements.mobileNav)?.focus();
+    });
+    $$("a", elements.mobileNav).forEach((link) => link.addEventListener("click", () => closeMenu()));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !elements.mobileNav.hidden) {
+        event.preventDefault();
+        closeMenu(true);
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (!elements.header.contains(event.target)) closeMenu();
+    });
+    document.addEventListener("focusin", (event) => {
+      if (!elements.header.contains(event.target)) closeMenu();
+    });
+    const mobile = window.matchMedia("(max-width: 620px)");
+    mobile.addEventListener?.("change", (event) => {
+      if (!event.matches) {
+        const focusWasInside = elements.mobileNav.contains(document.activeElement);
+        closeMenu();
+        if (focusWasInside) $(".brand", elements.header)?.focus();
+      }
+    });
   }
 
   function detectDevice() {
@@ -277,6 +309,9 @@
     if (!state.catalog?.countryCodes.includes(code)) code = inferCountryFromLocale();
     if (!state.catalog?.countryCodes.includes(code)) code = "";
 
+    // A late browser hint must not replace a choice the visitor already made.
+    if (state.countryConfirmed || state.selection) return;
+
     state.country = code;
     elements.country.value = code;
     elements.directoryCountry.value = code;
@@ -310,6 +345,7 @@
   }
 
   function searchableItems(query = "") {
+    if (!state.catalog) return [];
     const term = normalize(query);
     const providers = state.catalog.providers
       .filter((item) => !state.country || item.country === state.country)
@@ -326,20 +362,27 @@
   }
 
   function renderSuggestions(query = "") {
+    if (!state.catalog) return;
     const items = searchableItems(query).slice(0, 9);
+    state.suggestionItems = items;
+    state.activeSuggestion = -1;
+    elements.setupSearch.removeAttribute("aria-activedescendant");
     elements.suggestions.replaceChildren();
     if (!items.length) {
-      elements.suggestions.hidden = true;
-      elements.setupSearch.setAttribute("aria-expanded", "false");
+      closeSuggestions();
+      elements.setupHint.textContent = "No matching provider or router. Try the name on your router’s label, or use a common gateway below.";
       return;
     }
 
     const fragment = document.createDocumentFragment();
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const button = document.createElement("button");
       button.type = "button";
+      button.id = `setup-option-${index}`;
+      button.tabIndex = -1;
       button.className = "suggestion-button";
       button.setAttribute("role", "option");
+      button.setAttribute("aria-selected", "false");
       const copy = document.createElement("span");
       const title = document.createElement("strong");
       const subtitle = document.createElement("small");
@@ -349,12 +392,31 @@
       type.textContent = item.type;
       copy.append(title, subtitle);
       button.append(copy, type);
+      button.addEventListener("pointerdown", (event) => event.preventDefault());
       button.addEventListener("click", () => selectItem(item));
       fragment.append(button);
     });
     elements.suggestions.append(fragment);
     elements.suggestions.hidden = false;
     elements.setupSearch.setAttribute("aria-expanded", "true");
+    elements.setupHint.textContent = `${items.length} suggestions. Choose a result, or use the arrow keys and Enter.`;
+  }
+
+  function closeSuggestions() {
+    state.activeSuggestion = -1;
+    elements.suggestions.hidden = true;
+    elements.setupSearch.setAttribute("aria-expanded", "false");
+    elements.setupSearch.removeAttribute("aria-activedescendant");
+  }
+
+  function activateSuggestion(index) {
+    const options = $$("[role=option]", elements.suggestions);
+    if (!options.length) return;
+    state.activeSuggestion = (index + options.length) % options.length;
+    options.forEach((option, optionIndex) => option.setAttribute("aria-selected", String(optionIndex === state.activeSuggestion)));
+    const option = options[state.activeSuggestion];
+    elements.setupSearch.setAttribute("aria-activedescendant", option.id);
+    option.scrollIntoView({ block: "nearest" });
   }
 
   function renderQuickPicks() {
@@ -382,9 +444,9 @@
     state.selection = item;
     elements.setupSearch.value = item.name;
     elements.clearSetupSearch.hidden = false;
-    elements.suggestions.hidden = true;
-    elements.setupSearch.setAttribute("aria-expanded", "false");
+    closeSuggestions();
     elements.quickPicks.replaceChildren();
+    elements.setupHint.textContent = "Your suggested setup route is ready below. Check the router label if it does not open.";
     renderRecommendation();
     updateProgress();
   }
@@ -394,6 +456,7 @@
     elements.setupSearch.value = "";
     elements.clearSetupSearch.hidden = true;
     elements.recommendation.hidden = true;
+    closeSuggestions();
     renderQuickPicks();
     updateProgress();
     if (focus) elements.setupSearch.focus();
@@ -454,7 +517,8 @@
   function updateProgress() {
     const step = state.selection ? 3 : state.country ? 2 : 1;
     elements.stepCount.textContent = `${step} of 3`;
-    elements.progressBar.style.width = `${step * 33.34}%`;
+    elements.progressBar.style.width = `${step / 3 * 100}%`;
+    elements.progress.setAttribute("aria-valuenow", String(step));
   }
 
   function directoryItems() {
@@ -527,26 +591,48 @@
   function chooseFromDirectory(item) {
     if (item.type === "provider" && item.country) {
       state.country = item.country;
+      state.countryConfirmed = true;
       elements.country.value = item.country;
       elements.regionValue.textContent = countryName(item.country);
     }
     selectItem(item);
-    $("#setup").scrollIntoView({ behavior: "smooth", block: "start" });
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("#setup").scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+    elements.setupSearch.focus({ preventScroll: true });
+    closeSuggestions();
   }
 
   function initDirectory() {
-    $$('[data-directory-tab]').forEach((button) => button.addEventListener("click", () => {
+    const tabs = $$('[data-directory-tab]');
+    const selectTab = (button) => {
+      if (!state.catalog) return;
       state.directoryTab = button.dataset.directoryTab;
       state.directoryLimit = DIRECTORY_PAGE_SIZE;
-      $$('[data-directory-tab]').forEach((candidate) => {
+      tabs.forEach((candidate) => {
         const active = candidate === button;
         candidate.classList.toggle("is-active", active);
         candidate.setAttribute("aria-selected", String(active));
+        candidate.tabIndex = active ? 0 : -1;
       });
+      elements.directoryResults.setAttribute("aria-labelledby", button.id);
       const providers = state.directoryTab === "providers";
       $(".country-filter-wrap").hidden = !providers;
       renderDirectory();
-    }));
+    };
+    tabs.forEach((button, index) => {
+      button.addEventListener("click", () => selectTab(button));
+      button.addEventListener("keydown", (event) => {
+        let nextIndex = index;
+        if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+        else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === "Home") nextIndex = 0;
+        else if (event.key === "End") nextIndex = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        selectTab(tabs[nextIndex]);
+        tabs[nextIndex].focus();
+      });
+    });
     elements.directorySearch.addEventListener("input", () => {
       state.directoryLimit = DIRECTORY_PAGE_SIZE;
       renderDirectory();
@@ -564,6 +650,7 @@
   function initAssistant() {
     elements.country.addEventListener("change", () => {
       state.country = elements.country.value;
+      state.countryConfirmed = true;
       elements.regionValue.textContent = state.country ? countryName(state.country) : "Choose manually";
       elements.directoryCountry.value = state.country;
       clearSelection();
@@ -573,17 +660,42 @@
     elements.setupSearch.addEventListener("input", () => {
       const query = elements.setupSearch.value;
       elements.clearSetupSearch.hidden = !query;
-      if (state.selection && normalize(query) !== normalize(state.selection.name)) state.selection = null;
+      if (state.selection && normalize(query) !== normalize(state.selection.name)) {
+        state.selection = null;
+        elements.recommendation.hidden = true;
+        renderQuickPicks();
+      }
       renderSuggestions(query);
       updateProgress();
+    });
+    elements.setupSearch.addEventListener("keydown", (event) => {
+      if (!state.catalog) return;
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        if (elements.suggestions.hidden) renderSuggestions(elements.setupSearch.value);
+        if (!elements.suggestions.hidden) {
+          const next = event.key === "ArrowDown" ? state.activeSuggestion + 1 : state.activeSuggestion < 0 ? state.suggestionItems.length - 1 : state.activeSuggestion - 1;
+          activateSuggestion(next);
+        }
+      } else if (event.key === "Enter" && !elements.suggestions.hidden && state.activeSuggestion >= 0) {
+        event.preventDefault();
+        selectItem(state.suggestionItems[state.activeSuggestion]);
+      } else if (event.key === "Escape" && !elements.suggestions.hidden) {
+        event.preventDefault();
+        closeSuggestions();
+      } else if (event.key === "Tab") {
+        closeSuggestions();
+      }
     });
     elements.clearSetupSearch.addEventListener("click", () => clearSelection(true));
     $("#change-selection").addEventListener("click", () => clearSelection(true));
     document.addEventListener("click", (event) => {
       if (!event.target.closest(".field-group")) {
-        elements.suggestions.hidden = true;
-        elements.setupSearch.setAttribute("aria-expanded", "false");
+        closeSuggestions();
       }
+    });
+    document.addEventListener("focusin", (event) => {
+      if (!event.target.closest(".field-group")) closeSuggestions();
     });
     elements.primaryRoute.addEventListener("click", () => {
       if (isLocalRoute(elements.primaryRoute.href)) showToast("Opening a local route. Stay connected to your router.");
@@ -606,12 +718,17 @@
   async function loadCatalog() {
     const response = await fetch("/assets/router-catalog.json");
     if (!response.ok) throw new Error("Catalog could not be loaded");
-    state.catalog = await response.json();
+    const catalog = await response.json();
+    if (!["countryCodes", "providers", "brands", "gateways"].every((key) => Array.isArray(catalog?.[key]))) {
+      throw new Error("Catalog is not available");
+    }
+    state.catalog = catalog;
     createCountryOptions();
     const total = state.catalog.providers.length + state.catalog.brands.length + state.catalog.gateways.length;
     elements.catalogCount.textContent = `${total.toLocaleString()}+`;
     renderQuickPicks();
     renderDirectory();
+    [elements.country, elements.setupSearch, elements.directorySearch, elements.directoryCountry, ...$$('[data-directory-tab]')].forEach((control) => { control.disabled = false; });
   }
 
   function registerServiceWorker() {
@@ -637,6 +754,8 @@
       elements.directorySummary.textContent = "The catalog is temporarily unavailable. Common gateways remain available below.";
       elements.regionValue.textContent = "Choose manually";
       elements.setupHint.textContent = "Use a common gateway below or refresh to load personalized guidance.";
+      elements.country.options[0].textContent = "Directory unavailable";
+      elements.catalogCount.textContent = "—";
     }
   }
 
