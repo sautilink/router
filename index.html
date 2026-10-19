@@ -46,7 +46,8 @@
   <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/assets/brand/system.css" />
   <link rel="stylesheet" href="/assets/public-icons/icons.css?v=20261019-1" />
-  <link rel="stylesheet" href="/assets/app.css?v=20261019-1" />
+  <link rel="stylesheet" href="/assets/app.css?v=20261019-2" />
+  <link rel="stylesheet" href="/assets/public-select.css?v=20261019-1" />
 
   <script type="application/ld+json">
   {
@@ -111,7 +112,7 @@
   }
   </script>
 </head>
-<body data-public-icons>
+<body data-public-icons data-public-selects>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header" data-site-header>
@@ -188,7 +189,7 @@
           <div class="field-group">
             <label for="country-select"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" class="public-icon public-field-icon" data-public-icon="globe-0-2" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"></circle><path d="M8 12C8 18 12 22 12 22C12 22 16 18 16 12C16 6 12 2 12 2C12 2 8 6 8 12Z"></path><path d="M21 15H3"></path><path d="M21 9H3"></path></svg>Country or territory</label>
             <div class="select-wrap">
-              <select id="country-select" disabled><option value="">Loading countries…</option></select>
+              <select id="country-select" data-public-select-search data-public-select-search-placeholder="Search countries" disabled><option value="">Loading countries…</option></select>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" class="public-icon" data-public-icon="chevron-down" aria-hidden="true" focusable="false"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9"></path></svg>
             </div>
           </div>
@@ -239,7 +240,7 @@
               <input id="directory-search" type="search" placeholder="Search the directory" aria-label="Search the directory" disabled />
             </div>
             <div class="select-wrap country-filter-wrap">
-              <select id="directory-country" aria-label="Filter providers by country" disabled><option value="">All countries</option></select>
+              <select id="directory-country" aria-label="Filter providers by country" data-public-select-search data-public-select-search-placeholder="Search countries" disabled><option value="">All countries</option></select>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" class="public-icon" data-public-icon="chevron-down" aria-hidden="true" focusable="false"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9"></path></svg>
             </div>
           </div>
@@ -340,5 +341,6 @@
   <script src="/assets/public-icons/icons.js?v=20261019-1" defer></script>
   <script src="/assets/public-icons/adapter.js?v=20261019-1" defer></script>
   <script src="/assets/app.js?v=20261019-1" defer></script>
+  <script src="/assets/public-select.js?v=20261019-1" defer></script>
 </body>
 </html>
