@@ -77,6 +77,22 @@
       .toUpperCase();
   }
 
+  // Inert inline SVG templates keep real Huge artwork available even if motion cannot start.
+  function appendPublicIcon(parent, name, className = "") {
+    const source = document.querySelector(`template[data-router-icon="${name}"]`)?.content?.firstElementChild;
+    if (!source?.cloneNode) return false;
+    const icon = source.cloneNode(true);
+    if (className) icon.classList.add(className);
+    parent.append(icon);
+    return true;
+  }
+
+  function replacePublicIcon(parent, name) {
+    const source = document.querySelector(`template[data-router-icon="${name}"]`)?.content?.firstElementChild;
+    if (!parent || !source?.cloneNode) return;
+    parent.replaceChildren(source.cloneNode(true));
+  }
+
   function countryName(code) {
     if (!code) return "Unknown region";
     if (code === "XK") return "Kosovo";
@@ -195,6 +211,9 @@
 
     state.device = { type, os };
     elements.deviceValue.textContent = type;
+    const deviceIcon = ["ios", "android", "mobile"].includes(os) ? "smartphone" : "monitor";
+    replacePublicIcon($$(".context-icon")[0], deviceIcon);
+    replacePublicIcon($(".device-guide-icon"), deviceIcon);
     renderDeviceGuide();
   }
 
@@ -251,6 +270,8 @@
     notice.className = "notice";
     const title = $("strong", notice);
     const detail = $("p span", notice);
+    replacePublicIcon($(".notice-mark", notice), navigator.onLine ? "wifi" : "wifi-off");
+    replacePublicIcon($$(".context-icon")[1], navigator.onLine ? "wifi" : "wifi-off");
 
     if (!navigator.onLine) {
       state.connectionType = "offline";
@@ -391,6 +412,7 @@
       subtitle.textContent = item.type === "provider" ? countryName(item.country) : item.note || "Router manufacturer";
       type.textContent = item.type;
       copy.append(title, subtitle);
+      appendPublicIcon(button, item.type === "provider" ? "globe" : "router");
       button.append(copy, type);
       button.addEventListener("pointerdown", (event) => event.preventDefault());
       button.addEventListener("click", () => selectItem(item));
@@ -432,6 +454,7 @@
       button.type = "button";
       button.className = "quick-pick";
       button.textContent = item.name;
+      appendPublicIcon(button, item.type === "provider" ? "globe" : "router");
       button.addEventListener("click", () => selectItem(item));
       return button;
     }));
@@ -468,6 +491,7 @@
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.textContent = label || address;
+    appendPublicIcon(link, "arrow-right");
     return link;
   }
 
@@ -498,6 +522,8 @@
       }
     }
 
+    appendPublicIcon(elements.matchBadge, "check");
+    appendPublicIcon(elements.recommendationTitle, "router", "recommendation-title-icon");
     elements.recommendationCopy.textContent = copy;
     elements.primaryRoute.href = primaryUrl;
     elements.primaryRouteLabel.textContent = primaryLabel;
@@ -560,21 +586,22 @@
       type.className = "directory-card-type";
       const title = document.createElement("strong");
       const subtitle = document.createElement("span");
+      subtitle.className = "directory-card-subtitle";
 
       if (state.directoryTab === "providers") {
-        icon.textContent = initials(item.name);
+        if (!appendPublicIcon(icon, "globe")) icon.textContent = initials(item.name);
         type.textContent = "Provider";
         title.textContent = item.name;
         subtitle.textContent = countryName(item.country);
         card.addEventListener("click", () => chooseFromDirectory({ ...item, type: "provider" }));
       } else if (state.directoryTab === "brands") {
-        icon.textContent = initials(item.name);
+        if (!appendPublicIcon(icon, item.mode === "cloud" ? "cloud" : "router")) icon.textContent = initials(item.name);
         type.textContent = item.mode === "browser" ? "Router" : item.mode;
         title.textContent = item.name;
         subtitle.textContent = item.mode === "browser" ? "Local gateway setup" : "Official setup route";
         card.addEventListener("click", () => chooseFromDirectory({ ...item, type: "brand" }));
       } else {
-        icon.textContent = "IP";
+        if (!appendPublicIcon(icon, "router")) icon.textContent = "IP";
         type.textContent = item.tags?.[0] || "Gateway";
         title.textContent = item.address;
         subtitle.textContent = item.label;
@@ -583,6 +610,7 @@
 
       top.append(icon, type);
       card.append(top, title, subtitle);
+      appendPublicIcon(card, "arrow-right", "directory-card-route");
       fragment.append(card);
     });
     elements.directoryGrid.append(fragment);

@@ -33,6 +33,16 @@ The public interface uses Inter, the official Router logo, light neutral surface
 
 Styles and scripts are external to respect the existing content security policy. When replacing a cached interface asset, update its versioned page reference and service-worker cache entry together.
 
+## Public animated icons
+
+The public page uses the same AnimateIcons Huge artwork and motion runtime as SautiLink's main interface, with the shared catalog's documented Lucide utility fallbacks for hardware symbols. The local package, source provenance, icon names, hashes and licenses are included in `assets/public-icons/`; no icon CDN or new network request is required.
+
+Every decorative icon contains real SVG artwork and has `aria-hidden="true"` and `focusable="false"`. Static page icons remain visible when the animation scripts are unavailable. Search suggestions, quick picks, directory cards and route actions clone inert inline SVG templates, keeping the same fallback for dynamic content. Provider names, recommendations, gateway destinations and the existing keyboard controls remain owned by `assets/app.js`.
+
+Motion is enabled only under `body[data-public-icons]`. The shared adapter adds short hover, focus and introductory animations, respects reduced motion, and stops motion offscreen or when the page is hidden. The original public controls keep their own labels and events.
+
+When updating the icon package, keep `index.html`, the versioned CSS/JS references, the service-worker cache name and its shell entries in sync. Wrangler's `.wrangler/` directory is excluded from both Git and published static assets; CLI cache and temporary files must never be deployed.
+
 ## Updating the catalog
 
 Add providers and brands only when the name is current and there is a legitimate customer base. Use official support pages where possible. A provider's equipment may vary, so keep multiple likely gateways and do not add default passwords. Directory inclusion is informational and is not an endorsement.
@@ -47,6 +57,8 @@ Validate before deployment:
 jq -e . assets/router-catalog.json
 node --check assets/app.js
 node --check assets/router-theme.js
+node --check assets/public-icons/icons.js
+node --check assets/public-icons/adapter.js
 node --test tests/router-ui.test.mjs
 node --input-type=module --check < src/index.js
 git diff --check
