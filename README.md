@@ -43,6 +43,12 @@ Motion is enabled only under `body[data-public-icons]`. The shared adapter adds 
 
 When updating the icon package, keep `index.html`, the versioned CSS/JS references, the service-worker cache name and its shell entries in sync. Wrangler's `.wrangler/` directory is excluded from both Git and published static assets; CLI cache and temporary files must never be deployed.
 
+## Built-in country dropdowns
+
+Both country controls use the shared `assets/public-select.js` and `assets/public-select.css` presentation layer. Their original native selects, options, empty values and change handlers remain the source of truth; the country catalog and recommendation logic are unchanged. The shared module follows rebuilt options, programmatic values and disabled/loading states, and the page keeps native fields visible if the module does not load.
+
+The country menus search both country names and codes, support keyboard navigation and Escape, and use Router's light/dark field styling with the existing animated icons. The provider/router search keeps its existing custom combobox. Load the shared dropdown script after the page script and icon runtime, and version its files and service-worker cache entries together.
+
 ## Updating the catalog
 
 Add providers and brands only when the name is current and there is a legitimate customer base. Use official support pages where possible. A provider's equipment may vary, so keep multiple likely gateways and do not add default passwords. Directory inclusion is informational and is not an endorsement.
@@ -59,6 +65,7 @@ node --check assets/app.js
 node --check assets/router-theme.js
 node --check assets/public-icons/icons.js
 node --check assets/public-icons/adapter.js
+node --check assets/public-select.js
 node --test tests/router-ui.test.mjs
 node --input-type=module --check < src/index.js
 git diff --check
